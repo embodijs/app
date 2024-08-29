@@ -1,14 +1,10 @@
 import { OAuth2RequestError } from 'arctic';
-import { github, lucia } from '../../auth.server';
+import { github } from '../../auth.server';
 
 import { error, redirect, type RequestEvent } from '@sveltejs/kit';
-import { readUserByGithubId, writeUser } from '../../datasource.server';
-import { generateId, TYPEID } from '$lib/typeid';
-
-interface GitHubUser {
-	id: number;
-	login: string;
-}
+import type { GitHubUser } from '../../definitions';
+import { upsertUserByGithubId } from '../../logic.server';
+import { setLuciaSessionAndCookie } from '../../session.server';
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const code = event.url.searchParams.get('code');
@@ -28,31 +24,8 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		});
 		const githubUser: GitHubUser = await githubUserResponse.json();
 
-		const existingUser = await readUserByGithubId(githubUser.id);
-
-		if (existingUser) {
-			const session = await lucia.createSession(existingUser.id, {});
-			const sessionCookie = lucia.createSessionCookie(session.id);
-			event.cookies.set(sessionCookie.name, sessionCookie.value, {
-				path: '.',
-				...sessionCookie.attributes
-			});
-		} else {
-			const userId = generateId(TYPEID.USER);
-
-			await writeUser({
-				id: userId,
-				githubId: githubUser.id,
-				username: githubUser.login
-			});
-
-			const session = await lucia.createSession(userId, {});
-			const sessionCookie = lucia.createSessionCookie(session.id);
-			event.cookies.set(sessionCookie.name, sessionCookie.value, {
-				path: '.',
-				...sessionCookie.attributes
-			});
-		}
+		const user = await upsertUserByGithubId(githubUser);
+		await setLuciaSessionAndCookie(event.cookies, user);
 	} catch (e) {
 		// the specific error message depends on the provider
 		if (e instanceof OAuth2RequestError) {
@@ -68,5 +41,5 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		return error(500);
 	}
 
-	return redirect(302, '/dashboard');
+	return redirect(302, '/account');
 }

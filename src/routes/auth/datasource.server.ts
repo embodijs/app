@@ -3,11 +3,11 @@ import { users } from '$db/schema';
 import { eq } from 'drizzle-orm';
 import type { UserId } from './definitions';
 
-export const writeUser = async (user: { id: UserId; username: string; githubId?: number }) => {
-	await db.insert(users).values(user).execute();
-	return user.id;
+export const insertUser = async (user: { id: UserId; username: string; githubId?: number }) => {
+	const savedUser = await db.insert(users).values(user).returning();
+	return savedUser[0];
 };
 
-export const readUserByGithubId = async (id: number) => {
+export const loadUserByGithubId = async (id: number) => {
 	return await db.select().from(users).where(eq(users.githubId, id)).get();
 };

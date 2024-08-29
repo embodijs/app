@@ -1,5 +1,6 @@
 import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
+import type { ServerData } from './definitions';
 
 export const GET: RequestHandler = async ({ locals }) => {
 	if (!locals.user) {
@@ -7,5 +8,5 @@ export const GET: RequestHandler = async ({ locals }) => {
 	}
 	return json({
 		username: locals.user.username
-	});
+	} satisfies ServerData);
 };

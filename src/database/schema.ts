@@ -12,7 +12,9 @@ const customId = <T extends TYPEID>(name: string, notNull = true) =>
 export const users = sqliteTable('users', {
 	id: customId<TYPEID.USER>('id').primaryKey(),
 	githubId: integer('github_id').unique(),
-	username: text('username').notNull()
+	name: text('name').notNull(),
+	email: text('email').notNull(),
+	avatarUrl: text('avatar_url')
 });
 
 export const sessions = sqliteTable('sessions', {

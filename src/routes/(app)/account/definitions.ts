@@ -1,3 +1,4 @@
 export interface ServerData {
-	username: string;
+	name: string;
+	avatar?: string;
 }

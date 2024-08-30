@@ -1,9 +1,9 @@
 import { db } from '$db/init.server';
 import { users } from '$db/schema';
 import { eq } from 'drizzle-orm';
-import type { UserId } from './definitions';
+import type { UserDatabase } from './definitions';
 
-export const insertUser = async (user: { id: UserId; username: string; githubId?: number }) => {
+export const insertUser = async (user: UserDatabase) => {
 	const savedUser = await db.insert(users).values(user).returning();
 	return savedUser[0];
 };

@@ -13,6 +13,8 @@ export const upsertUserByGithubId = async (gitHubUser: GitHubUser): Promise<User
 	return await insertUser({
 		id: generateId(TYPEID.USER),
 		githubId: gitHubUser.id,
-		username: gitHubUser.login
+		name: gitHubUser.name,
+		email: gitHubUser.notification_email || gitHubUser.email,
+		avatarUrl: gitHubUser.avatar_url
 	});
 };

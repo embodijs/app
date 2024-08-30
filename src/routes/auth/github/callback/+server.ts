@@ -23,6 +23,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 			}
 		});
 		const githubUser: GitHubUser = await githubUserResponse.json();
+		console.log('githubUser', githubUser);
 
 		const user = await upsertUserByGithubId(githubUser);
 		await setLuciaSessionAndCookie(event.cookies, user);

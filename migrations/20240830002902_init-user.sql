@@ -8,7 +8,9 @@ CREATE TABLE `sessions` (
 CREATE TABLE `users` (
 	`id` text PRIMARY KEY NOT NULL,
 	`github_id` integer,
-	`username` text NOT NULL
+	`name` text NOT NULL,
+	`email` text NOT NULL,
+	`avatar_url` text
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `users_github_id_unique` ON `users` (`github_id`);

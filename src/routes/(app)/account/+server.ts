@@ -7,6 +7,6 @@ export const GET: RequestHandler = async ({ locals }) => {
 		return error(401, 'Unauthorized');
 	}
 	return json({
-		username: locals.user.username
+		name: locals.user.name
 	} satisfies ServerData);
 };

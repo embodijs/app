@@ -4,7 +4,6 @@ import { lucia } from './routes/auth/auth.server';
 
 const handleLuciaSession: Handle = async ({ event, resolve }) => {
 	const sessionId = event.cookies.get(lucia.sessionCookieName);
-	console.log(sessionId);
 	if (!sessionId) {
 		event.locals.user = null;
 		event.locals.session = null;

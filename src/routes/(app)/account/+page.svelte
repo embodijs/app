@@ -5,5 +5,5 @@
 </script>
 
 <main>
-	<h1>Hello, {data.name}</h1>
+	<h1>Hello, {data.user.name}</h1>
 </main>

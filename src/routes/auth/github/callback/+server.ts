@@ -42,5 +42,5 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		return error(500);
 	}
 
-	return redirect(302, '/account');
+	return redirect(302, '/dashboard');
 }

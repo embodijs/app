@@ -4,7 +4,7 @@ const CONTEXT = Symbol('group');
 
 interface SelectContext {
 	group: string;
-	selected: string;
+	selected?: string;
 }
 
 export const setSelectContext = (data: SelectContext): void => {

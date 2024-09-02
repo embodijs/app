@@ -1,11 +1,12 @@
 <script lang="ts">
 	import type { PageData } from "./$types";
 	import { ProjectList, EmptyTile } from "$lib/comps/project";
+	import { goto } from "$app/navigation";
 
 	//export let data: PageData;
 
 	const addProject = () => {
-		console.log("Add project");
+		goto("/projects/create");
 	};
 </script>
 

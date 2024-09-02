@@ -16,6 +16,7 @@ const config = {
 			$db: './src/database',
 			'$domain/account': './src/routes/(app)/account',
 			'$domain/auth': './src/routes/auth',
+			'$api': './src/routes/api',
 		}
 	}
 };

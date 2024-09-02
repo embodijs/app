@@ -1,11 +1,20 @@
 <script lang="ts">
-	import { setContext } from "svelte";
+	import { setSelectContext } from "./context";
 
 	export let name: string;
-
-	setContext('FormSelectorWheel', { group: name });
+	console.log(name);
+	setSelectContext({ group: name });
 </script>
 
-<ul>
+<ul class="content-tile border">
 	<slot></slot>
 </ul>
+
+<style>
+	ul {
+		list-style: none;
+		padding: 0;
+		border: var(--border);
+	}
+
+</style>

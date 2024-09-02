@@ -8,7 +8,7 @@ import jwt from 'jsonwebtoken';
 import { sessions, users } from '$db/schema';
 import type { InferSelectModel } from 'drizzle-orm';
 import fs from 'fs';
-import type { Cookies } from '@sveltejs/kit';
+import { error, type Cookies } from '@sveltejs/kit';
 import type { UserDatabase } from './definitions';
 
 const adapter = new DrizzleSQLiteAdapter(db, sessions, users);
@@ -82,7 +82,7 @@ export function isAuthenticated(
 	locals: App.Locals
 ): asserts locals is { session: Session; user: User } {
 	if (locals.session && locals.user && locals.session.accessToken) return;
-	throw new Error('Not authenticated');
+	error(401, 'Unauthorized');
 }
 
 export const getAccessToken = (locals: { session: Session }): string => {

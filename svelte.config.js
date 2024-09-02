@@ -14,7 +14,8 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			$db: './src/database',
-			'$domain/account': './src/routes/(app)/account'
+			'$domain/account': './src/routes/(app)/account',
+			'$domain/auth': './src/routes/auth',
 		}
 	}
 };

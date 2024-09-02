@@ -1,10 +1,9 @@
 import { OAuth2RequestError } from 'arctic';
-import { github } from '../../auth.server';
+import { github, setLuciaSessionAndCookie } from '../../auth.server';
 
 import { error, redirect, type RequestEvent } from '@sveltejs/kit';
 import type { GitHubUser } from '../../definitions';
 import { upsertUserByGithubId } from '../../logic.server';
-import { setLuciaSessionAndCookie } from '../../session.server';
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const code = event.url.searchParams.get('code');
@@ -23,10 +22,9 @@ export async function GET(event: RequestEvent): Promise<Response> {
 			}
 		});
 		const githubUser: GitHubUser = await githubUserResponse.json();
-		console.log('githubUser', githubUser);
 
 		const user = await upsertUserByGithubId(githubUser);
-		await setLuciaSessionAndCookie(event.cookies, user);
+		await setLuciaSessionAndCookie(event.cookies, tokens.accessToken, user);
 	} catch (e) {
 		// the specific error message depends on the provider
 		if (e instanceof OAuth2RequestError) {

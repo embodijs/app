@@ -22,5 +22,6 @@ export const sessions = sqliteTable('sessions', {
 	userId: customId<TYPEID.USER>('user_id')
 		.notNull()
 		.references(() => users.id),
-	expiresAt: integer('expires_at').notNull()
+	expiresAt: integer('expires_at').notNull(),
+	accessToken: text('access_token').notNull()
 });

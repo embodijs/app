@@ -8,7 +8,7 @@ const handleLuciaSession: Handle = async ({ event, resolve }) => {
 		event.locals.user = null;
 		event.locals.session = null;
 		if (event.route.id && event.route.id.startsWith('(app)')) {
-			return redirect(302, '/');
+			return redirect(302, '/auth');
 		}
 		return resolve(event);
 	}

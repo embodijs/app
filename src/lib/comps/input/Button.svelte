@@ -3,15 +3,14 @@
 	export let type: ButtonType  = "primary";
 </script>
 
-<button class="{type}">
+<button class="{type}" {...$$restProps}>
 	<slot></slot>
 </button>
 
 <style>
 	button {
 		border: none;
-		border-radius: 4px;
-		padding: 8px 16px;
+		@apply text-base font-semibold px-4 py-2 m-2 rounded-md;
 		cursor: pointer;
 	}
 	.primary {
@@ -37,5 +36,10 @@
 	.success {
 		background-color: var(--success);
 		color: white;
+	}
+
+	button:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
 	}
 </style>

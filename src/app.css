@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
 	--color-primary-50: #f0fdfa;
 	--color-primary-100: #ccfbf1;
@@ -40,6 +44,8 @@
 body {
 	background-color: var(--color-secondary-150);
 	color: var(--color-secondary-800);
+	font-size: 16px;
+	@apply font-sans;
 }
 
 .content-tile {

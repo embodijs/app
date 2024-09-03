@@ -1,17 +1,28 @@
 <script lang="ts">
+	import { createEventDispatcher } from "svelte";
 	import { getSelectContext } from "./context";
 
 
 	const { group, selected  } = getSelectContext();
-	export let value: string;
+	export let value: string | number;
+
+	const dispatch = createEventDispatcher<{select: { name: string, value: string | number, type: "radio"}}>();
+
 
 	const forId = `option-${group}-${value}`;
+
+	const handleChange = (event: Event) => {
+		const target = event.target as HTMLInputElement;
+		if(target.checked) {
+			dispatch("select", { name: group, value, type: "radio" });
+		}
+	}
 
 
 </script>
 
 <li>
-	<input id={forId} type="radio" name={group} {value} checked={(!!selected && value === selected)}  />
+	<input id={forId} type="radio" name={group} {value} checked={(!!selected && value === selected)} on:change={handleChange}  />
 	<label for={forId}>
 			<slot>{value}</slot>
 	</label>

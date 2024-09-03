@@ -9,5 +9,5 @@ export const GET: RequestHandler = async ({ locals, fetch }) => {
 		}
 	});
 
-	return repos;
+	return new Response(repos.body);
 };

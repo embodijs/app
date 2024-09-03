@@ -6,7 +6,6 @@ export const load: PageLoad = async ({ fetch }) => {
 	const response = await fetch('/api/git/repos');
 	isAuthenticated(response);
 	const repos: APIData = await response.json();
-	console.log('repos', repos);
 	return {
 		repos
 	};

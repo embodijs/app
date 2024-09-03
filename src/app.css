@@ -52,6 +52,7 @@ body {
 	background-color: var(--color-secondary-50);
 	border-radius: 0.7rem;
 	box-shadow: 0 0.7rem 1.3rem rgba(0, 0, 0, 0.17);
+	padding: 1.1rem;
 }
 
 .border {

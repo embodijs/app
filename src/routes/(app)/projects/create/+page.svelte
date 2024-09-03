@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { enhance } from "$app/forms";
 	import { ChooseRepo } from "$lib/comps/project";
 	import type { PageData } from "./$types";
 
@@ -14,6 +15,6 @@
 
 </script>
 
-<form>
+<form on:submit|preventDefault>
 	<ChooseRepo repos={data.repos} on:new={handleCreateNew} on:select={handleFromRepo} />
 </form>

@@ -3,7 +3,7 @@
 	export let type: ButtonType  = "primary";
 </script>
 
-<button class="{type}" {...$$restProps}>
+<button class="{type}" {...$$restProps} on:click on:dblclick>
 	<slot></slot>
 </button>
 

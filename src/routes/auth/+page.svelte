@@ -1,9 +1,18 @@
+<script lang="ts">
+	import type { PageData } from "./$types";
+	import {page} from '$app/stores'
+
+	export let data: PageData;
+	const githubAuthUrl = new URL('/auth/github', $page.url.origin)
+	$: data.redirectTo && githubAuthUrl.searchParams.set('redirect', data.redirectTo)
+</script>
+
 
 <main>
 	<section class="content-tile">
 		<h1>Sign in</h1>
 		<div class="sign-ins">
-			<a role="button" href="/auth/github">
+			<a role="button" href={githubAuthUrl.toString()}>
 				<i class="ri-github-fill"></i>
 				<span>Sign in with GitHub</span>
 			</a>

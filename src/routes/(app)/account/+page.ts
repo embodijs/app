@@ -4,7 +4,7 @@ import { isAuthenticated } from '$lib/helpers/api';
 
 export const load: PageLoad = async ({ fetch, url }) => {
 	const [accountResponse, userResponse] = await Promise.all([fetch(url), fetch('/account/user')]);
-	isAuthenticated(accountResponse);
+	isAuthenticated(accountResponse, url);
 
 	const account = (await accountResponse.json()) as AccountServerData;
 	const user = (await userResponse.json()) as UserServerData;

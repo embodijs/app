@@ -9,6 +9,9 @@ export async function GET(event: RequestEvent): Promise<Response> {
 	const code = event.url.searchParams.get('code');
 	const state = event.url.searchParams.get('state');
 	const storedState = event.cookies.get('github_oauth_state') ?? null;
+	const redirectTo = event.cookies.get('login_redirect') ?? '/';
+	event.cookies.delete('github_oauth_state', { path: '/' });
+	event.cookies.delete('login_redirect', { path: '/' });
 
 	if (!code || !state || !storedState || state !== storedState) {
 		return error(400, 'Invalid state');
@@ -40,5 +43,5 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		return error(500);
 	}
 
-	return redirect(302, '/dashboard');
+	return redirect(302, redirectTo);
 }

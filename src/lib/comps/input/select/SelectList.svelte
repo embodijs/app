@@ -2,7 +2,6 @@
 	import { setSelectContext } from "./context";
 
 	export let name: string;
-	console.log(name);
 	setSelectContext({ group: name });
 </script>
 

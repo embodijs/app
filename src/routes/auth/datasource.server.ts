@@ -1,10 +1,17 @@
 import { db } from '$db/init.server';
 import { users } from '$db/schema';
 import { eq } from 'drizzle-orm';
-import type { UserDatabase } from './definitions';
+import type { User } from './definitions';
 
-export const insertUser = async (user: UserDatabase) => {
-	const savedUser = await db.insert(users).values(user).returning();
+export const insertUser = async (user: User) => {
+	const savedUser = await db
+		.insert(users)
+		.values({
+			...user,
+			createdAt: Date.now(),
+			updatedAt: Date.now()
+		})
+		.returning();
 	return savedUser[0];
 };
 

@@ -9,12 +9,18 @@ const customId = <T extends TYPEID>(name: string, notNull = true) =>
 		}
 	})(name);
 
+const metaAttributes = {
+	createdAt: integer('created_at').notNull(),
+	updatedAt: integer('updated_at').notNull()
+};
+
 export const users = sqliteTable('users', {
 	id: customId<TYPEID.USER>('id').primaryKey(),
 	githubId: integer('github_id').unique(),
 	name: text('name').notNull(),
 	email: text('email').notNull(),
-	avatarUrl: text('avatar_url')
+	avatarUrl: text('avatar_url'),
+	...metaAttributes
 });
 
 export const sessions = sqliteTable('sessions', {
@@ -24,4 +30,15 @@ export const sessions = sqliteTable('sessions', {
 		.references(() => users.id),
 	expiresAt: integer('expires_at').notNull(),
 	accessToken: text('access_token').notNull()
+});
+
+export const projects = sqliteTable('projects', {
+	id: customId<TYPEID.PROJECT>('id').primaryKey(),
+	refId: text('ref_id').notNull(),
+	name: text('name').notNull(),
+	displayName: text('display_name').notNull(),
+	url: text('url').notNull(),
+	branch: text('branch').notNull().default('main'),
+	path: text('path').notNull().default('/')
+	// ...metaAttributes
 });

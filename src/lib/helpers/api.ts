@@ -1,7 +1,10 @@
 import { redirect } from '@sveltejs/kit';
 
-export function isAuthenticated(res: Response) {
+export function isAuthenticated(res: Response, url: URL) {
 	if (res.status === 401) {
-		redirect(302, '/auth');
+		const redirectUrl = new URL('/auth', url.origin);
+		redirectUrl.searchParams.set('redirect', url.pathname);
+
+		redirect(302, redirectUrl);
 	}
 }

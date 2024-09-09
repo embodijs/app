@@ -1,3 +1,5 @@
+import { nanoid } from 'nanoid';
+
 export const generateSimpleHash = async (rawData: unknown): Promise<string> => {
 	const data = typeof rawData === 'object' ? JSON.stringify(rawData) : String(rawData);
 
@@ -5,4 +7,9 @@ export const generateSimpleHash = async (rawData: unknown): Promise<string> => {
 	const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
 	const hashArray = Array.from(new Uint8Array(hashBuffer));
 	return hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+};
+
+export const generateUniqueId = (): string => {
+	const id = nanoid();
+	return id;
 };

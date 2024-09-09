@@ -4,6 +4,7 @@ import type { InferSelectModel } from 'drizzle-orm';
 
 export type UserId = TypeId<TYPEID.USER>;
 export type UserDatabase = InferSelectModel<typeof users>;
+export type User = Omit<UserDatabase, 'createdAt' | 'updatedAt'>;
 
 export interface GitHubUser {
 	id: number;

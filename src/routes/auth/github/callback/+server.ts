@@ -1,9 +1,9 @@
 import { OAuth2RequestError } from 'arctic';
-import { github, setLuciaSessionAndCookie } from '../../auth.server';
+import { github, setLuciaSessionAndCookie } from '$infra/auth/auth.server';
 
 import { error, redirect, type RequestEvent } from '@sveltejs/kit';
-import type { GitHubUser } from '../../definitions';
-import { upsertUserByGithubId } from '../../logic.server';
+import type { GitHubUser } from '$def/github';
+import { upsertUserByGithubId } from '$epp/auth.server';
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const code = event.url.searchParams.get('code');

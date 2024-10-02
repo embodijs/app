@@ -9,7 +9,7 @@ import { sessions, users } from '$db/schema';
 import type { InferSelectModel } from 'drizzle-orm';
 import fs from 'fs';
 import { error, type Cookies } from '@sveltejs/kit';
-import type { UserDatabase } from './definitions';
+import type { UserDatabase } from '$def/user';
 
 const adapter = new DrizzleSQLiteAdapter(db, sessions, users);
 const githubPrivateKey = fs.readFileSync('Embodi-Localhost-Private-Key.pem', 'utf8');
@@ -25,6 +25,7 @@ export const lucia = new Lucia(adapter, {
 		return {
 			// attributes has the type of DatabaseUserAttributes
 			id: attributes.id,
+			githubUsername: attributes.githubUsername,
 			githubId: attributes.githubId,
 			name: attributes.name,
 			avatarUrl: attributes.avatarUrl,
@@ -71,7 +72,6 @@ export const setLuciaSessionAndCookie = async (
 		accessToken: token
 	});
 	const sessionCookie = lucia.createSessionCookie(session.id);
-	console.log('sessionCookie', sessionCookie);
 	cookies.set(sessionCookie.name, sessionCookie.value, {
 		path: '.',
 		...sessionCookie.attributes

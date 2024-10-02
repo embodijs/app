@@ -1,12 +1,13 @@
 <script lang="ts">
-	import type { PageData } from "./$types";
-	import {page} from '$app/stores'
+	import type { PageData } from './$types';
+	import { page } from '$app/stores';
 
 	export let data: PageData;
-	const githubAuthUrl = new URL('/auth/github', $page.url.origin)
-	$: data.redirectTo && githubAuthUrl.searchParams.set('redirect', data.redirectTo)
+	const githubAuthUrl = new URL('/auth/github', $page.url.origin);
+	$: if (data.redirectTo) {
+		githubAuthUrl.searchParams.set('redirect', data.redirectTo);
+	}
 </script>
-
 
 <main>
 	<section class="content-tile">

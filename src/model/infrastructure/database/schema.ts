@@ -17,6 +17,7 @@ const metaAttributes = {
 export const users = sqliteTable('users', {
 	id: customId<TYPEID.USER>('id').primaryKey(),
 	githubId: integer('github_id').unique(),
+	githubUsername: text('githubUsername'),
 	name: text('name').notNull(),
 	email: text('email').notNull(),
 	avatarUrl: text('avatar_url'),
@@ -34,11 +35,12 @@ export const sessions = sqliteTable('sessions', {
 
 export const projects = sqliteTable('projects', {
 	id: customId<TYPEID.PROJECT>('id').primaryKey(),
-	refId: text('ref_id').notNull(),
+	repoId: text('ref_id').notNull(),
+	owner: text('owner').notNull(),
+	repo: text('repo').notNull(),
 	name: text('name').notNull(),
-	displayName: text('display_name').notNull(),
 	url: text('url').notNull(),
 	branch: text('branch').notNull().default('main'),
-	path: text('path').notNull().default('/')
-	// ...metaAttributes
+	path: text('path').notNull().default('/'),
+	...metaAttributes
 });

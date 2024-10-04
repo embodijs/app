@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { generateUniqueId } from "$lib/helpers/crypto";
-	import { initInputGroupContext } from "./context";
+	import { generateUniqueId } from '$lib/helpers/crypto';
+	import { initInputGroupContext } from './context';
 
 	const forId = generateUniqueId();
 	const { errors } = initInputGroupContext(forId);
@@ -17,21 +17,23 @@
 		margin: 1rem;
 		@apply border-2 border-gray-300 rounded-md border-r-0;
 		overflow: hidden;
-		width: fit-content;
 	}
-
-
 
 	div :global(label),
 	div :global(input),
 	div :global(textarea) {
-			@apply p-3 border-x-2 border-zinc-300;
-			margin-left: -1px;
-		}
-
-	div :global(label) {
-		@apply bg-zinc-300;
+		@apply p-3 border-x-2 border-zinc-300;
+		margin-left: -1px;
 	}
 
+	div :global(input),
+	div :global(textarea) {
+		flex: 1;
+	}
 
+	div :global(label) {
+		@apply bg-zinc-200;
+		width: max-content;
+		text-wrap: nowrap;
+	}
 </style>

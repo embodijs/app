@@ -1,4 +1,5 @@
 import type { GitHubUser } from '$def/github';
+import type { UserDatabase } from '$def/user';
 import { insertUser, loadUserByGithubId } from '$infra/auth/datasource.server';
 import { generateId, TYPEID } from '$lib/typeid';
 

@@ -1,3 +1,16 @@
+CREATE TABLE `projects` (
+	`id` text PRIMARY KEY NOT NULL,
+	`ref_id` text NOT NULL,
+	`owner` text NOT NULL,
+	`repo` text NOT NULL,
+	`name` text NOT NULL,
+	`url` text NOT NULL,
+	`branch` text DEFAULT 'main' NOT NULL,
+	`path` text DEFAULT '/' NOT NULL,
+	`created_at` integer NOT NULL,
+	`updated_at` integer NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE `sessions` (
 	`id` text PRIMARY KEY NOT NULL,
 	`user_id` text NOT NULL,
@@ -9,9 +22,12 @@ CREATE TABLE `sessions` (
 CREATE TABLE `users` (
 	`id` text PRIMARY KEY NOT NULL,
 	`github_id` integer,
+	`githubUsername` text,
 	`name` text NOT NULL,
 	`email` text NOT NULL,
-	`avatar_url` text
+	`avatar_url` text,
+	`created_at` integer NOT NULL,
+	`updated_at` integer NOT NULL
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `users_github_id_unique` ON `users` (`github_id`);

@@ -1,9 +1,19 @@
 <script lang="ts">
-	type ButtonType = "primary" | "secondary" | "ghost" | "danger" | "warning" | "success";
-	export let type: ButtonType  = "primary";
+	type ButtonType = 'primary' | 'submit' | 'reset' | 'ghost';
+	export let type: ButtonType = 'primary';
+
+	const getButtonType = (type: ButtonType) => {
+		switch (type) {
+			case 'reset':
+			case 'submit':
+				return type;
+			default:
+				return 'button';
+		}
+	};
 </script>
 
-<button class="{type}" {...$$restProps} on:click on:dblclick>
+<button class={type} {...$$restProps} type={getButtonType(type)} on:click on:dblclick>
 	<slot></slot>
 </button>
 
@@ -13,7 +23,8 @@
 		@apply text-base font-semibold px-4 py-2 m-2 rounded-md;
 		cursor: pointer;
 	}
-	.primary {
+	.primary,
+	.submit {
 		background-color: var(--color-primary-700);
 		color: white;
 	}
@@ -25,7 +36,8 @@
 		background-color: transparent;
 		color: var(--color-primary-700);
 	}
-	.danger {
+	.danger,
+	.reset {
 		background-color: var(--danger);
 		color: white;
 	}

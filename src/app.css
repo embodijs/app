@@ -43,9 +43,8 @@
 
 body {
 	background-color: var(--color-secondary-150);
-	color: var(--color-secondary-800);
 	font-size: 16px;
-	@apply font-sans;
+	@apply font-sans bg-zinc-100;
 }
 
 .content-tile {

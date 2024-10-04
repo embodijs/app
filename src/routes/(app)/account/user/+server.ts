@@ -1,12 +1,12 @@
-import { error, json } from '@sveltejs/kit';
+import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import type { AccountServerData } from '../definitions';
+import { isAuthenticated } from '$infra/auth/auth.server';
 
 export const GET: RequestHandler = async ({ locals }) => {
-	if (!locals.user) {
-		return error(401, 'Unauthorized');
-	}
+	isAuthenticated(locals);
 	return json({
+		username: locals.user.githubUsername,
 		name: locals.user.name,
 		avatar: locals.user.avatarUrl ?? undefined
 	} satisfies AccountServerData);

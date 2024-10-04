@@ -17,7 +17,8 @@ export const createSchema = v.object({
 	repoName: v.pipe(v.string(), v.minLength(3)),
 	repoDescription: v.optional(v.string()),
 	repoPrivate: v.optional(v.boolean()),
-	repoId: v.optional(schema.entries.repoId)
+	repoId: v.optional(schema.entries.repoId),
+	hasPages: v.boolean()
 });
 
 export const editSchema = schema;

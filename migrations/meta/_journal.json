@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1725235902954,
-      "tag": "20240902001142_init_user",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1725375742091,
-      "tag": "20240903150222_init_project",
+      "when": 1727107163359,
+      "tag": "20240923155923_init",
       "breakpoints": true
     }
   ]

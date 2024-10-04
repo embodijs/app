@@ -1,6 +1,6 @@
 import { redirect, type Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
-import { lucia } from './routes/auth/auth.server';
+import { lucia } from '$infra/auth/auth.server';
 
 const handleLuciaSession: Handle = async ({ event, resolve }) => {
 	const sessionId = event.cookies.get(lucia.sessionCookieName);

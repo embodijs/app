@@ -4,5 +4,5 @@ import type { RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ locals }) => {
 	isAuthenticated(locals);
-	return loadRepositories(locals.session?.accessToken);
+	return loadRepositories(locals.session.accessToken);
 };

@@ -1,3 +1,4 @@
+import type { GitHubPlatformData } from '$def/github';
 import { TYPEID, type TypeId } from '$lib/typeid';
 import { text, integer, sqliteTable, customType } from 'drizzle-orm/sqlite-core';
 
@@ -16,8 +17,8 @@ const metaAttributes = {
 
 export const users = sqliteTable('users', {
 	id: customId<TYPEID.USER>('id').primaryKey(),
-	githubId: integer('github_id').unique(),
-	githubUsername: text('githubUsername'),
+	platformId: text('platform_id').notNull(),
+	platformData: text('platform_data', { mode: 'json' }).$type<GitHubPlatformData>().notNull(),
 	name: text('name').notNull(),
 	email: text('email').notNull(),
 	avatarUrl: text('avatar_url'),

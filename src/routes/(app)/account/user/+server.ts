@@ -6,7 +6,7 @@ import { isAuthenticated } from '$infra/auth/auth.server';
 export const GET: RequestHandler = async ({ locals }) => {
 	isAuthenticated(locals);
 	return json({
-		username: locals.user.githubUsername,
+		platformData: locals.user.platformData,
 		name: locals.user.name,
 		avatar: locals.user.avatarUrl ?? undefined
 	} satisfies AccountServerData);

@@ -10,6 +10,7 @@ import type { InferSelectModel } from 'drizzle-orm';
 import fs from 'fs';
 import { error, type Cookies } from '@sveltejs/kit';
 import type { UserDatabase } from '$def/user';
+import { removeNil } from '$lib/helpers/database';
 
 const adapter = new DrizzleSQLiteAdapter(db, sessions, users);
 const githubPrivateKey = fs.readFileSync('Embodi-Localhost-Private-Key.pem', 'utf8');
@@ -21,16 +22,15 @@ export const lucia = new Lucia(adapter, {
 			secure: !dev
 		}
 	},
-	getUserAttributes: (attributes) => {
-		return {
+	getUserAttributes: ({ id, name, platformData, avatarUrl, email }) => {
+		return removeNil({
 			// attributes has the type of DatabaseUserAttributes
-			id: attributes.id,
-			githubUsername: attributes.githubUsername,
-			githubId: attributes.githubId,
-			name: attributes.name,
-			avatarUrl: attributes.avatarUrl,
-			email: attributes.email
-		};
+			id,
+			name,
+			platformData,
+			avatarUrl,
+			email
+		});
 	},
 	getSessionAttributes: (attributes) => {
 		return {

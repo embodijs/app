@@ -1,3 +1,9 @@
+export interface GitHubPlatformData {
+	type: 'GitHub';
+	id: number;
+	username: string;
+}
+
 export interface GitHubUser {
 	id: number;
 	login: string;

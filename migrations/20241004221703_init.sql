@@ -21,13 +21,11 @@ CREATE TABLE `sessions` (
 --> statement-breakpoint
 CREATE TABLE `users` (
 	`id` text PRIMARY KEY NOT NULL,
-	`github_id` integer,
-	`githubUsername` text,
+	`platform_id` text NOT NULL,
+	`platform_data` text NOT NULL,
 	`name` text NOT NULL,
 	`email` text NOT NULL,
 	`avatar_url` text,
 	`created_at` integer NOT NULL,
 	`updated_at` integer NOT NULL
 );
---> statement-breakpoint
-CREATE UNIQUE INDEX `users_github_id_unique` ON `users` (`github_id`);

@@ -1,7 +1,7 @@
 import { db } from '$db/init.server';
 import { users } from '$db/schema';
 import { eq } from 'drizzle-orm';
-import type { User } from './definitions';
+import type { User } from '$def/user';
 
 export const insertUser = async (user: User) => {
 	const savedUser = await db
@@ -15,6 +15,6 @@ export const insertUser = async (user: User) => {
 	return savedUser[0];
 };
 
-export const loadUserByGithubId = async (id: number) => {
-	return await db.select().from(users).where(eq(users.githubId, id)).get();
+export const loadUserByPlatformId = async (id: number) => {
+	return db.select().from(users).where(eq(users.platformId, id.toString())).get();
 };

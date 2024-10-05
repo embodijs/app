@@ -1,8 +1,6 @@
 import { isAuthenticated } from '$infra/auth/auth.server';
 import type { RequestHandler } from './$types';
 
-export const GET: RequestHandler = () => {};
-
 export const POST: RequestHandler = async ({ fetch, locals, request }) => {
 	isAuthenticated(locals);
 	const data = await request.json();

@@ -1,5 +1,6 @@
 import { generateId, TYPEID } from '$lib/typeid';
 import type { NewProject, Project } from '$def/project';
+import type { SomeRecord } from '$lib/helpers/type';
 
 export function createProjectFromNewProject(
 	project: NewProject & Required<Pick<NewProject, 'repoId'>>

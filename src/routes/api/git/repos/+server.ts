@@ -1,8 +1,14 @@
 import { isAuthenticated } from '$infra/auth/auth.server';
 import { loadRepositories } from '$infra/github/repo';
-import type { RequestHandler } from '@sveltejs/kit';
+import { json } from '@sveltejs/kit';
+import { prepareAsyncPipe, prepareGate } from 'pipe-and-combine';
+import type { RequestEvent, RequestHandler } from './$types';
 
-export const GET: RequestHandler = async ({ locals }) => {
-	isAuthenticated(locals);
-	return loadRepositories(locals.session.accessToken);
-};
+const pipe = prepareAsyncPipe<[RequestEvent], Response>();
+const gate = prepareGate(({ locals }: RequestEvent) => [locals]);
+
+export const GET: RequestHandler = pipe(
+	gate(isAuthenticated),
+	({ locals }) => loadRepositories(locals.session.accessToken),
+	json
+);

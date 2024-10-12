@@ -1,6 +1,7 @@
-import { redirect, type Handle } from '@sveltejs/kit';
+import { redirect, error, type Handle, type HandleServerError } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { lucia } from '$infra/auth/auth.server';
+import { NotAuthorizedException } from '$def/exceptions';
 
 const handleLuciaSession: Handle = async ({ event, resolve }) => {
 	const sessionId = event.cookies.get(lucia.sessionCookieName);
@@ -35,4 +36,12 @@ const handleLuciaSession: Handle = async ({ event, resolve }) => {
 	return resolve(event);
 };
 
-export const handle: Handle = sequence(handleLuciaSession);
+export const handle = sequence(handleLuciaSession);
+
+export const handleError: HandleServerError = async ({ error: exception }) => {
+	console.error(exception);
+
+	if (exception instanceof NotAuthorizedException) {
+		error(401, 'Not authorized');
+	}
+};

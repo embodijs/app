@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { setSelectContext } from "./context";
+	import { setSelectContext } from './context';
 
 	export let name: string;
-	setSelectContext({ group: name });
+	export let selected: string | undefined = undefined;
+
+	setSelectContext({ group: name, selected });
 </script>
 
 <ul class="content-tile border">
@@ -15,5 +17,4 @@
 		padding: 0;
 		border: var(--border);
 	}
-
 </style>

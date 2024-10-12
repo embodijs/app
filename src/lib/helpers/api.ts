@@ -5,6 +5,6 @@ export function isAuthenticated(res: Response, url: URL) {
 		const redirectUrl = new URL('/auth', url.origin);
 		redirectUrl.searchParams.set('redirect', url.pathname);
 
-		return redirect(302, redirectUrl);
+		redirect(302, redirectUrl);
 	}
 }

@@ -1,25 +1,30 @@
 <script lang="ts">
+	import type { GitRepo } from '$def/git';
 	import { SelectList, Option } from '$lib/comps';
 	import { getMultistageContext } from '../form/multistageContext';
 	import Button from '../input/Button.svelte';
 	import { createEventDispatcher } from 'svelte';
-	type RepoProp = { full_name: string; name: string; id: number; default_branch: string };
-	export let repos: RepoProp[] = [];
-	const { progress } = getMultistageContext();
-	const dispatch = createEventDispatcher<{ new: undefined; select: RepoProp }>();
 
-	let selectedRepo: RepoProp | undefined;
+	export let repos: GitRepo[] = [];
+	export let selected: string | undefined = undefined;
+
+	const { progress } = getMultistageContext();
+	const dispatch = createEventDispatcher<{ new: undefined; select: GitRepo }>();
+
 	const handleRepoSelect = (
 		event: CustomEvent<{ value: string | number; name: string; type: 'radio' }>
 	) => {
-		selectedRepo = repos.find((repo) => repo.id === event.detail.value);
+		selected = event.detail.value as string;
 	};
 
 	const handleChoice = () => {
-		if (selectedRepo) {
-			dispatch('select', selectedRepo);
+		if (selected) {
+			const repo = repos.find((repo) => repo.id === selected);
+			if (repo) {
+				dispatch('select', repo);
+			}
+			progress.set(50);
 		}
-		progress.set(50);
 	};
 
 	const handleCreateNewRepo = () => {
@@ -29,10 +34,10 @@
 </script>
 
 <div class="formpart">
-	<SelectList name="repo">
+	<SelectList {selected} name="repo">
 		{#each repos as repo}
 			<Option value={repo.id} on:select={handleRepoSelect}>
-				{repo.full_name}
+				{repo.fullName}
 			</Option>
 		{/each}
 	</SelectList>
@@ -41,7 +46,7 @@
 			<i class="ri-add-fill"></i>
 			create new repo
 		</Button>
-		<Button type="primary" disabled={!selectedRepo} on:click={handleChoice}>
+		<Button type="primary" disabled={!selected} on:click={handleChoice}>
 			<i class="ri-git-repository-fill"></i>
 			next
 		</Button>

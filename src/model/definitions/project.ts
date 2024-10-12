@@ -1,4 +1,4 @@
-import { TYPEID, valibotTypeId, type TypeId } from '$lib/typeid';
+import { TYPEID, valibotTypeId } from '$lib/typeid';
 import * as v from 'valibot';
 
 export const schema = v.object({
@@ -9,16 +9,16 @@ export const schema = v.object({
 	branch: v.pipe(v.string(), v.minLength(1)),
 	path: v.string(),
 	owner: v.string(),
-	repo: v.string()
+	repo: v.string(),
+	activePage: v.optional(v.boolean(), false)
 });
 
 export const createSchema = v.object({
 	...v.omit(schema, ['id']).entries,
-	repoName: v.pipe(v.string(), v.minLength(3)),
+	repo: v.pipe(v.string(), v.minLength(3)),
 	repoDescription: v.optional(v.string()),
 	repoPrivate: v.optional(v.boolean()),
-	repoId: v.optional(schema.entries.repoId),
-	hasPages: v.boolean()
+	repoId: v.optional(schema.entries.repoId)
 });
 
 export const editSchema = schema;

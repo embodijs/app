@@ -1,16 +1,21 @@
-async function activatePages(f: typeof fetch, project: Project) {
+import type { Project } from '$def/project';
+
+export async function activatePages(project: Project) {
 	const { repo, owner, branch, path } = project;
-	const response = await f('/api/git/repos/pages', {
+	const response = await fetch(`https://api.github.com/${owner}/${repo}/pages`, {
 		method: 'POST',
 		body: JSON.stringify({
-			repo,
-			owner,
-			branch,
-			path
+			build_type: 'workflow',
+			source: {
+				branch: branch,
+				path
+			}
 		})
 	});
 
 	if (!response.ok) {
 		throw new Error('Pages could not be activated');
 	}
+
+	return response;
 }

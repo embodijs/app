@@ -5,6 +5,7 @@ import { valibot } from 'sveltekit-superforms/adapters';
 import { createSchema } from '$def/project';
 import { createProject } from '$epp/project.server';
 import { isAuthenticated } from '$infra/auth/auth.server';
+import { createSessionUser } from '$core/user';
 
 export const actions: Actions = {
 	default: async ({ request, locals }) => {
@@ -14,9 +15,9 @@ export const actions: Actions = {
 		if (!form.valid) {
 			return fail(400, { form });
 		}
-
-		createProject(form.data, { accessTocken: locals.session.accessToken });
-
+		const sessionUser = createSessionUser(locals.user, locals.session!);
+		await createProject(form.data, sessionUser);
+		console.info('Project created successfully');
 		return message(form, 'Project created successfully');
 	}
 };

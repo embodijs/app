@@ -15,3 +15,17 @@ export interface GitHubUser {
 	email: string;
 	notification_email: string;
 }
+
+export interface GitHubRepo {
+	id: number;
+	name: string;
+	full_name: string;
+	owner: {
+		login: string;
+		id: number;
+	};
+	private: boolean;
+	description: string;
+	default_branch: string;
+	has_pages: boolean;
+}

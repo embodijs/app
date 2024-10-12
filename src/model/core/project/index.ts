@@ -7,8 +7,9 @@ export function createProjectFromNewProject(
 ): Project {
 	const id = generateProjectId();
 	return {
-		...project,
-		id
+		activePage: false,
+		id,
+		...project
 	};
 }
 

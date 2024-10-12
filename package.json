@@ -20,7 +20,7 @@
 	"devDependencies": {
 		"@playwright/test": "^1.48.0",
 		"@sveltejs/adapter-auto": "^3.2.5",
-		"@sveltejs/kit": "^2.6.4",
+		"@sveltejs/kit": "^2.7.0",
 		"@sveltejs/vite-plugin-svelte": "^3.1.2",
 		"@types/eslint": "^9.6.1",
 		"@types/jsonwebtoken": "^9.0.7",
@@ -35,7 +35,7 @@
 		"prettier": "^3.3.3",
 		"prettier-plugin-svelte": "^3.2.7",
 		"svelte": "^4.2.19",
-		"svelte-check": "^4.0.4",
+		"svelte-check": "^4.0.5",
 		"sveltekit-superforms": "^2.19.1",
 		"tailwindcss": "^3.4.13",
 		"typescript": "^5.6.3",
@@ -53,7 +53,7 @@
 		"jsonwebtoken": "^9.0.2",
 		"lucia": "^3.2.1",
 		"nanoid": "^5.0.7",
-		"pipe-and-combine": "^0.5.2",
+		"pipe-and-combine": "^0.5.7",
 		"remixicon": "^4.3.0",
 		"valibot": "^0.42.1"
 	}

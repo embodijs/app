@@ -3,7 +3,6 @@
 	import StageButton from '$lib/comps/form/StageButton.svelte';
 	import MultistageForm from '$lib/comps/form/MultistageForm.svelte';
 	import Button from '$lib/comps/input/Button.svelte';
-	import HiddenInput from '$lib/comps/input/HiddenInput.svelte';
 	import InputGroup from '$lib/comps/input/InputGroup.svelte';
 	import Label from '$lib/comps/input/Label.svelte';
 	import Textarea from '$lib/comps/input/Textarea.svelte';
@@ -14,14 +13,17 @@
 	import { superForm } from 'sveltekit-superforms';
 	import { valibot } from 'sveltekit-superforms/adapters';
 	import { createSchema } from '$def/project';
+	import type { GitRepo } from '$def/git';
 
 	export let data: PageData;
 
-	const sf = superForm(data.superForm, valibot(createSchema));
+	const sf = superForm(data.superForm, {
+		dataType: 'json',
+		validators: valibot(createSchema)
+	});
 	const { form, errors } = sf;
+	errors.subscribe((err) => console.log(err));
 	$form.owner = data.user.username;
-
-	errors.subscribe(console.log);
 
 	const handleCreateNew = () => {
 		form.update(
@@ -33,22 +35,16 @@
 		);
 	};
 
-	const handleFromRepo = (
-		event: CustomEvent<{
-			full_name: string;
-			name: string;
-			id: number;
-			default_branch: string;
-			hasPages: boolean;
-		}>
-	) => {
-		const { default_branch, id, hasPages } = event.detail;
+	const handleFromRepo = (event: CustomEvent<GitRepo>) => {
+		const { defaultBranch, id, activePage, name, owner } = event.detail;
 		form.update(
 			setPartial({
+				repo: name,
+				owner: owner,
 				repoId: id.toString(),
-				branch: default_branch,
+				branch: defaultBranch,
 				path: '/',
-				hasPages
+				activePage
 			})
 		);
 	};
@@ -56,16 +52,20 @@
 
 <MultistageForm super={sf}>
 	<FormStage to={20}>
-		<ChooseRepo repos={data.repos} on:new={handleCreateNew} on:select={handleFromRepo} />
+		<ChooseRepo
+			selected={$form.repoId}
+			repos={data.repos}
+			on:new={handleCreateNew}
+			on:select={handleFromRepo}
+		/>
 	</FormStage>
 	<FormStage to={50}>
 		<InputGroup let:id>
-			<TextInput {id} name="repo" value={$form.repo} />
+			<TextInput {id} name="repo" bind:value={$form.repo} />
 			<Label>Repo Name</Label>
 		</InputGroup>
 		<Textarea name="repoDescription">Description</Textarea>
-		<TextInput name="owner" value={$form.owner} readonly />
-		<HiddenInput name="private" value={true} type="checkbox" checked />
+		<TextInput name="owner" bind:value={$form.owner} readonly />
 		<StageButton to={0} previous>Previous</StageButton>
 		<StageButton to={50}>Next</StageButton>
 	</FormStage>
@@ -75,16 +75,13 @@
 			<Label>Repository</Label>
 		</InputGroup>
 		<InputGroup let:id>
-			<TextInput {id} name="name" value={$form.name} />
+			<TextInput {id} name="name" bind:value={$form.name} />
 			<Label>Project Name</Label>
 		</InputGroup>
 		<InputGroup let:id>
-			<TextInput {id} name="url" value={$form.url} />
+			<TextInput {id} name="url" bind:value={$form.url} />
 			<Label>URL</Label>
 		</InputGroup>
-		<HiddenInput name="branch" value={$form.branch} />
-		<HiddenInput name="path" value={$form.path} />
-		<HiddenInput name="hasPages" value={$form.hasPages} />
 		<StageButton to={0} previous>Previous</StageButton>
 		<Button type="submit">Save</Button>
 	</FormStage>

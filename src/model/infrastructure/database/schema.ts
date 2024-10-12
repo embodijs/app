@@ -41,6 +41,7 @@ export const projects = sqliteTable('projects', {
 	repo: text('repo').notNull(),
 	name: text('name').notNull(),
 	url: text('url').notNull(),
+	activePage: integer('active_pages', { mode: 'boolean' }).notNull(),
 	branch: text('branch').notNull().default('main'),
 	path: text('path').notNull().default('/'),
 	...metaAttributes

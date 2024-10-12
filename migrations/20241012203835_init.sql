@@ -5,6 +5,7 @@ CREATE TABLE `projects` (
 	`repo` text NOT NULL,
 	`name` text NOT NULL,
 	`url` text NOT NULL,
+	`active_pages` integer NOT NULL,
 	`branch` text DEFAULT 'main' NOT NULL,
 	`path` text DEFAULT '/' NOT NULL,
 	`created_at` integer NOT NULL,

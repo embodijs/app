@@ -5,12 +5,10 @@ import { generateId, TYPEID } from '$lib/typeid';
 
 export const upsertUserByGithubId = async (gitHubUser: GitHubUser): Promise<UserDatabase> => {
 	const user = await loadUserByPlatformId(gitHubUser.id);
-
 	if (user) {
 		// TODO: Compare User and Update
 		return user;
 	}
-
 	return await insertUser({
 		id: generateId(TYPEID.USER),
 		platformId: gitHubUser.id.toString(),

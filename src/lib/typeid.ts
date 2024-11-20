@@ -8,6 +8,7 @@ export enum TYPEID {
 }
 
 export const generateId = <T extends TYPEID>(domain: T): TypeId<T> => {
+	//encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
 	return `${domain}-${nanoid()}`;
 };
 

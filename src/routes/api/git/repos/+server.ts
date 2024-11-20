@@ -1,4 +1,4 @@
-import { isAuthenticated } from '$infra/auth/auth.server';
+import { isAuthenticated } from '$lib/helpers/auth.server';
 import { loadRepositories } from '$infra/github/repo';
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';

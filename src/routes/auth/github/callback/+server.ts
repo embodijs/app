@@ -1,9 +1,9 @@
 import { OAuth2RequestError } from 'arctic';
-import { github, setLuciaSessionAndCookie } from '$infra/auth/auth.server';
+import { github, setLuciaSessionAndCookie } from '$infra/auth/git.server.js';
 
 import { error, redirect, type RequestEvent } from '@sveltejs/kit';
-import type { GitHubUser } from '$def/github';
-import { upsertUserByGithubId } from '$epp/auth.server';
+import type { GitHubUser } from '$def/github.js';
+import { upsertUserByGithubId } from '$epp/auth.server.js';
 
 export async function GET(event: RequestEvent): Promise<Response> {
 	const code = event.url.searchParams.get('code');
@@ -24,10 +24,12 @@ export async function GET(event: RequestEvent): Promise<Response> {
 				Authorization: `Bearer ${tokens.accessToken}`
 			}
 		});
+		console.log(githubUserResponse);
 		const githubUser: GitHubUser = await githubUserResponse.json();
-
+		console.log(githubUser);
 		const user = await upsertUserByGithubId(githubUser);
-		await setLuciaSessionAndCookie(event.cookies, tokens.accessToken, user);
+		console.log(user);
+		await setLuciaSessionAndCookie(event, tokens.accessToken, user);
 	} catch (e) {
 		// the specific error message depends on the provider
 		if (e instanceof OAuth2RequestError) {

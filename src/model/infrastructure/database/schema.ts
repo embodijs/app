@@ -15,7 +15,7 @@ const metaAttributes = {
 	updatedAt: integer('updated_at').notNull()
 };
 
-export const users = sqliteTable('users', {
+export const user = sqliteTable('user', {
 	id: customId<TYPEID.USER>('id').primaryKey(),
 	platformId: text('platform_id').notNull(),
 	platformData: text('platform_data', { mode: 'json' }).$type<GitHubPlatformData>().notNull(),
@@ -25,16 +25,16 @@ export const users = sqliteTable('users', {
 	...metaAttributes
 });
 
-export const sessions = sqliteTable('sessions', {
+export const session = sqliteTable('session', {
 	id: customId<TYPEID.SESSION>('id').primaryKey(),
 	userId: customId<TYPEID.USER>('user_id')
 		.notNull()
-		.references(() => users.id),
-	expiresAt: integer('expires_at').notNull(),
+		.references(() => user.id),
+	expiresAt: integer('expires_at', { mode: 'timestamp' }).notNull(),
 	accessToken: text('access_token').notNull()
 });
 
-export const projects = sqliteTable('projects', {
+export const project = sqliteTable('projects', {
 	id: customId<TYPEID.PROJECT>('id').primaryKey(),
 	repoId: text('ref_id').notNull(),
 	owner: text('owner').notNull(),
@@ -46,3 +46,7 @@ export const projects = sqliteTable('projects', {
 	path: text('path').notNull().default('/'),
 	...metaAttributes
 });
+
+export type DatabaseSession = typeof session.$inferSelect;
+export type DatabaseUser = typeof user.$inferSelect;
+export type DatabaseProject = typeof project.$inferSelect;

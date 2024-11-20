@@ -1,11 +1,11 @@
 import { db } from '$db/init.server';
-import { users } from '$db/schema';
+import * as table from '$db/schema';
 import { eq } from 'drizzle-orm';
 import type { User } from '$def/user';
 
 export const insertUser = async (user: User) => {
 	const savedUser = await db
-		.insert(users)
+		.insert(table.user)
 		.values({
 			...user,
 			createdAt: Date.now(),
@@ -16,5 +16,5 @@ export const insertUser = async (user: User) => {
 };
 
 export const loadUserByPlatformId = async (id: number) => {
-	return db.select().from(users).where(eq(users.platformId, id.toString())).get();
+	return db.select().from(table.user).where(eq(table.user.platformId, id.toString())).get();
 };

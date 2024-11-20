@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 import { generateState } from 'arctic';
-import { github } from '$infra/auth/auth.server';
+import { github } from '$infra/auth/git.server.js';
 
 import type { RequestEvent } from '@sveltejs/kit';
 

@@ -1,3 +1,4 @@
+import { preprocessMeltUI } from '@melt-ui/pp';
 import adapter from '@sveltejs/adapter-auto';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
@@ -5,7 +6,7 @@ import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 const config = {
 	// Consult https://svelte.dev/docs/kit/integrations
 	// for more information about preprocessors
-	preprocess: vitePreprocess(),
+	preprocess: [vitePreprocess(), preprocessMeltUI()],
 
 	kit: {
 		// adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
@@ -23,7 +24,12 @@ const config = {
 			$stores: './src/stores',
 			$validation: './src/model/validation',
 			$core: './src/model/core',
-			$data: './src/model/infrastructure'
+			$data: './src/model/infrastructure',
+			$atoms: './src/components/atoms',
+			$molecules: './src/components/molecules',
+			$organisms: './src/components/organisms',
+			$templates: './src/components/templates',
+			$components: './src/components'
 		}
 	}
 };

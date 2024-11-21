@@ -1,7 +1,8 @@
 import { sequence } from '@sveltejs/kit/hooks';
 import { i18n } from '$lib/i18n';
-import type { Handle } from '@sveltejs/kit';
+import { error, type Handle, type HandleServerError } from '@sveltejs/kit';
 import * as auth from '$infra/auth/lucia.server.js';
+import { NotAuthorizedException } from '$def/exceptions';
 
 const handleAuth: Handle = async ({ event, resolve }) => {
 	const sessionToken = event.cookies.get(auth.sessionCookieName);
@@ -26,3 +27,11 @@ const handleAuth: Handle = async ({ event, resolve }) => {
 
 const handleParaglide: Handle = i18n.handle();
 export const handle: Handle = sequence(handleAuth, handleParaglide);
+
+export const handleError: HandleServerError = async ({ error: exception }) => {
+	console.error(exception);
+
+	if (exception instanceof NotAuthorizedException) {
+		error(401, 'Not authorized');
+	}
+};

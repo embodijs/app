@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { LayoutData } from './$types';
-	import { Header } from '$components';
+	import { Header, Toaster } from '$components';
 	import type { Snippet } from 'svelte';
 
 	type Props = {
@@ -11,5 +11,7 @@
 	const { data, children }: Props = $props();
 </script>
 
-<Header user={data.user} />
-{@render children?.()}
+<Toaster>
+	<Header user={data.user} />
+	{@render children?.()}
+</Toaster>

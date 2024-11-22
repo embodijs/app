@@ -14,8 +14,8 @@
 		return `ri-${service.toLowerCase()}-fill`;
 	};
 
-	const defineAuthUrl = (service: string, redirect: string) => {
-		const authUrl = new URL(`/auth/${service}`, $page.url.origin);
+	const defineAuthUrl = (service: string, redirect?: string) => {
+		const authUrl = new URL(`/auth/${service.toLowerCase()}`, $page.url.origin);
 		if (redirect) {
 			authUrl.searchParams.set('redirect', redirect);
 		}

@@ -76,7 +76,7 @@ export async function validateSessionToken(token: string) {
 
 export type SessionValidationResult = Awaited<ReturnType<typeof validateSessionToken>>;
 
-export async function invalidateSession(sessionId: string) {
+export async function invalidateSession(sessionId: TypeId<TYPEID.SESSION>) {
 	await db.delete(table.session).where(eq(table.session.id, sessionId));
 }
 

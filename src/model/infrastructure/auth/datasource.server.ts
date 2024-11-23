@@ -4,12 +4,14 @@ import { eq } from 'drizzle-orm';
 import type { User } from '$def/user';
 
 export const insertUser = async (user: User) => {
+	const now = new Date();
 	const savedUser = await db
 		.insert(table.user)
 		.values({
+			platformId: user.platformData.id.toString(),
 			...user,
-			createdAt: Date.now(),
-			updatedAt: Date.now()
+			createdAt: now,
+			updatedAt: now
 		})
 		.returning();
 	return savedUser[0];

@@ -11,8 +11,8 @@ const customId = <T extends TYPEID>(name: string, notNull = true) =>
 	})(name);
 
 const metaAttributes = {
-	createdAt: integer('created_at').notNull(),
-	updatedAt: integer('updated_at').notNull()
+	createdAt: integer('created_at', { mode: 'timestamp_ms' }).notNull(),
+	updatedAt: integer('updated_at', { mode: 'timestamp_ms' }).notNull()
 };
 
 export const user = sqliteTable('user', {

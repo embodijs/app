@@ -11,7 +11,6 @@ export const upsertUserByGithubId = async (gitHubUser: GitHubUser): Promise<User
 	}
 	return await insertUser({
 		id: generateId(TYPEID.USER),
-		platformId: gitHubUser.id.toString(),
 		platformData: {
 			type: 'GitHub',
 			id: gitHubUser.id,

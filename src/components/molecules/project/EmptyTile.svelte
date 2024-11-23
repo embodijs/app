@@ -1,7 +1,12 @@
 <script lang="ts">
+	type Props = {
+		onclick: () => void;
+	};
+
+	const { onclick }: Props = $props();
 </script>
 
-<button on:click class="content-tile border dashed clickable">
+<button {onclick} class="content-tile dashed clickable border">
 	<i class="ri-add-large-line"></i>
 	<span>Add a new project</span>
 </button>
@@ -22,7 +27,6 @@
 	button:hover {
 		color: inherit;
 	}
-
 
 	button i {
 		font-size: 3rem;

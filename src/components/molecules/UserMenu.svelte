@@ -1,18 +1,22 @@
+<script lang="ts" module>
+	import { Avatar } from 'flowbite-svelte';
+	export type User = { name: string; avatar?: string };
+</script>
+
 <script lang="ts">
-	export let user: {name: string; avatar?: string};
+	const { user }: { user: User } = $props();
 </script>
 
 <div>
 	<div>
 		<span>Hello, {user.name}</span>
 		{#if user.avatar}
-			<img src={user.avatar} alt={user.name} />
+			<Avatar src={user.avatar} />
 		{/if}
 	</div>
 </div>
 
 <style>
-
 	div {
 		display: flex;
 		justify-content: space-between;
@@ -24,12 +28,4 @@
 		padding: 0.5rem;
 		font-weight: 600;
 	}
-
-	img {
-		border-radius: 50%;
-		width: 3rem;
-		height: 3rem;
-		margin-right: 0.5rem;
-	}
-
 </style>

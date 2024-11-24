@@ -24,11 +24,8 @@ export async function GET(event: RequestEvent): Promise<Response> {
 				Authorization: `Bearer ${tokens.accessToken}`
 			}
 		});
-		console.log(githubUserResponse);
 		const githubUser: GitHubUser = await githubUserResponse.json();
-		console.log(githubUser);
 		const user = await upsertUserByGithubId(githubUser);
-		console.log(user);
 		await setLuciaSessionAndCookie(event, tokens.accessToken, user);
 	} catch (e) {
 		// the specific error message depends on the provider

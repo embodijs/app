@@ -31,9 +31,24 @@
 		validators: valibot(createSchema)
 	});
 
+	const newRepo: GitRepo = $state({
+		id: '',
+		name: '',
+		description: '',
+		private: false,
+		pages: true
+	});
+
+	const existingRepo: GitRepo = $state({
+		id: '',
+		name: '',
+		description: '',
+		private: false,
+		pages: true
+	});
+
 	$effect(() => {
 		return allErrors.subscribe((errors) => {
-			console.log(errors);
 			if (errors?.length) {
 				errors.forEach((error) => {
 					notifications.error(`Field ${error.path} ${error.messages.join(', ')}`);
@@ -59,6 +74,13 @@
 			};
 		});
 	};
+
+	const chooseRepo = () => {
+		//TODO: merge Data from existingRepo into form data
+	};
+	const createRepo = () => {
+		//TODO: merge Data from newRepo into form data
+	};
 </script>
 
 <Section>
@@ -66,7 +88,7 @@
 	<form method="POST" use:enhance class="grid gap-4">
 		<div>
 			<Tabs tabStyle="underline">
-				<TabItem open>
+				<TabItem onclick={chooseRepo}>
 					<div slot="title">
 						<i class="ri-git-commit-line"></i> Choose extisting Project
 					</div>
@@ -75,11 +97,11 @@
 						<Select
 							id={INPUT_IDS.REPO_SELECT}
 							items={convertRepoToSelectItems(repos)}
-							bind:value={$form.repo.id}
+							bind:value={existingRepo.id}
 						/>
 					</div>
 				</TabItem>
-				<TabItem open>
+				<TabItem open onclick={createRepo}>
 					<div slot="title">
 						<i class="ri-add-line"></i>
 						Create a new Project
@@ -87,7 +109,7 @@
 					<div class="grid gap-4">
 						<div>
 							<Label for={INPUT_IDS.REPO_NAME}>Name of the Project in GitHub</Label>
-							<Input name="repoName" id={INPUT_IDS.REPO_NAME} bind:value={$form.repo.name} />
+							<Input name="repoName" id={INPUT_IDS.REPO_NAME} bind:value={newRepo.name} />
 						</div>
 						<div>
 							<Label for={INPUT_IDS.REPO_DESCRIPTION}>Description for Git (optional)</Label>
@@ -95,10 +117,11 @@
 								name="repoDescription"
 								id={INPUT_IDS.REPO_DESCRIPTION}
 								placeholder="Description will be send to GitHub"
+								bind:value={newRepo.description}
 							/>
 						</div>
 						<div>
-							<Checkbox checked={$form.repo.private}>Private</Checkbox>
+							<Checkbox checked={newRepo.private}>Private</Checkbox>
 							<Helper>Should the repository be private?</Helper>
 						</div>
 					</div>

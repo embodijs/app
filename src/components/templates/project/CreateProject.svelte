@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { GitRepo } from '$def/git';
-	import { createSchema, type NewProject } from '$def/project';
+	import type { GitRepo } from '$core/git';
+	import { schema, type NewProject } from '$core/project';
 	import {
 		Tabs,
 		TabItem,
@@ -28,10 +28,10 @@
 	const { form: validateForm, repos }: Props = $props();
 	const { form, enhance, allErrors } = superForm(validateForm, {
 		dataType: 'json',
-		validators: valibot(createSchema)
+		validators: valibot(schema.create)
 	});
 
-	const newRepo: GitRepo = $state({
+	const newRepo = $state({
 		id: '',
 		name: '',
 		description: '',
@@ -39,7 +39,7 @@
 		pages: true
 	});
 
-	const existingRepo: GitRepo = $state({
+	const existingRepo = $state({
 		id: '',
 		name: '',
 		description: '',
@@ -130,11 +130,11 @@
 		</div>
 		<div>
 			<Label for={INPUT_IDS.PROJECT_NAME}>Project name</Label>
-			<Input id={INPUT_IDS.PROJECT_NAME} name="name" />
+			<Input id={INPUT_IDS.PROJECT_NAME} name="name" bind:value={$form.name} />
 		</div>
 		<div>
 			<Label for={INPUT_IDS.PROJECT_URL}>Project name</Label>
-			<Input id={INPUT_IDS.PROJECT_URL} name="url" />
+			<Input id={INPUT_IDS.PROJECT_URL} name="url" bind:value={$form.url} />
 		</div>
 		<div>
 			<Label for={INPUT_IDS.PROJECT_DESCRIPTION}>Project description (optional)</Label>
@@ -142,6 +142,7 @@
 				name="repoDescription"
 				id={INPUT_IDS.PROJECT_DESCRIPTION}
 				placeholder="Description will be send to GitHub"
+				bind:value={$form.description}
 			/>
 		</div>
 

@@ -1,8 +1,7 @@
-import { GitHubExceptions, NotAuthorizedException } from '$def/exceptions';
-import type { GitRepo } from '$def/git';
-import type { GitHubRepo } from '$def/github';
-import type { NewProject } from '$def/project';
-import type { SessionUser } from '$def/user';
+import { GitHubExceptions, NotAuthorizedException } from '$core/exceptions';
+import type { GitRepo, GitHubRepo } from '$core/git';
+import type { NewProject } from '$core/project';
+import type { SessionUser } from '$core/user';
 
 export async function loadRepositories(user: SessionUser): Promise<GitRepo[]> {
 	const response = await fetch('https://api.github.com/user/repos', {

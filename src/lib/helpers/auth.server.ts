@@ -1,4 +1,6 @@
 import { error } from '@sveltejs/kit';
+import type { Session } from '$core/session';
+import type { User } from '$core/user';
 
 export function isAuthenticated(
 	locals: App.Locals

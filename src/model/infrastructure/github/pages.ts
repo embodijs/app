@@ -1,4 +1,4 @@
-import type { Project } from '$def/project';
+import type { Project } from '$core/project';
 
 export async function activatePages(project: Project) {
 	const { repo, owner, branch, path } = project;

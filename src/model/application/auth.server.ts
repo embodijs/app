@@ -1,9 +1,9 @@
-import type { GitHubUser } from '$def/github';
-import type { UserDatabase } from '$def/user';
+import type { GitHubUser } from '$core/git';
+import type { StoredUser } from '$core/user';
 import { insertUser, loadUserByPlatformId } from '$infra/auth/datasource.server';
 import { generateId, TYPEID } from '$lib/typeid';
 
-export const upsertUserByGithubId = async (gitHubUser: GitHubUser): Promise<UserDatabase> => {
+export const upsertUserByGithubId = async (gitHubUser: GitHubUser): Promise<StoredUser> => {
 	const user = await loadUserByPlatformId(gitHubUser.id);
 	if (user) {
 		// TODO: Compare User and Update

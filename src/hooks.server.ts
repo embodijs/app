@@ -2,7 +2,7 @@ import { sequence } from '@sveltejs/kit/hooks';
 import { i18n } from '$lib/i18n';
 import { error, type Handle, type HandleServerError } from '@sveltejs/kit';
 import * as auth from '$infra/auth/lucia.server.js';
-import { NotAuthorizedException } from '$def/exceptions';
+import { NotAuthorizedException } from '$core/exceptions';
 
 const handleAuth: Handle = async ({ event, resolve }) => {
 	const sessionToken = event.cookies.get(auth.sessionCookieName);

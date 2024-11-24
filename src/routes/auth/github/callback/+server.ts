@@ -2,7 +2,7 @@ import { OAuth2RequestError } from 'arctic';
 import { github, setLuciaSessionAndCookie } from '$infra/auth/git.server.js';
 
 import { error, redirect, type RequestEvent } from '@sveltejs/kit';
-import type { GitHubUser } from '$def/github.js';
+import type { GitHubUser } from '$core/git';
 import { upsertUserByGithubId } from '$epp/auth.server.js';
 
 export async function GET(event: RequestEvent): Promise<Response> {

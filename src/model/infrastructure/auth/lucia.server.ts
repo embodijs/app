@@ -3,9 +3,14 @@ import { eq } from 'drizzle-orm';
 import { sha256 } from '@oslojs/crypto/sha2';
 import { encodeBase64url, encodeHexLowerCase } from '@oslojs/encoding';
 import { db } from '$db/init.server';
-import * as table from '$db/schema';
 import { TYPEID, type TypeId } from '$lib/typeid';
-import type { UserId } from '$def/user';
+import { type UserId, schema as userSchema } from '$core/user';
+import { type StoredSession, schema as sessionSchema } from '$core/session';
+
+const storage = {
+	user: userSchema.storage,
+	session: sessionSchema.storage
+};
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
 
@@ -23,13 +28,13 @@ export function encodeSessionToken(token: string): TypeId<TYPEID.SESSION> {
 }
 
 export async function createSession(token: string, userId: UserId, accessToken: string) {
-	const session: table.DatabaseSession = {
+	const session: StoredSession = {
 		id: encodeSessionToken(token),
 		userId,
 		accessToken,
 		expiresAt: new Date(Date.now() + DAY_IN_MS * 30)
 	};
-	await db.insert(table.session).values(session);
+	await db.insert(session.storage).values(session);
 	return session;
 }
 
@@ -37,19 +42,19 @@ export async function validateSessionToken(token: string) {
 	const sessionId = encodeSessionToken(token);
 	const [result] = await db
 		.select({
-			// Adjust user table here to tweak returned data
+			// Adjust user storage here to tweak returned data
 			user: {
-				id: table.user.id,
-				name: table.user.name,
-				email: table.user.email,
-				avatarUrl: table.user.avatarUrl,
-				platformData: table.user.platformData
+				id: storage.user.id,
+				name: storage.user.name,
+				email: storage.user.email,
+				avatarUrl: storage.user.avatarUrl,
+				platformData: storage.user.platformData
 			},
-			session: table.session
+			session: storage.session
 		})
-		.from(table.session)
-		.innerJoin(table.user, eq(table.session.userId, table.user.id))
-		.where(eq(table.session.id, sessionId));
+		.from(storage.session)
+		.innerJoin(storage.user, eq(storage.session.userId, storage.user.id))
+		.where(eq(storage.session.id, sessionId));
 
 	if (!result) {
 		return { session: null, user: null };
@@ -58,7 +63,7 @@ export async function validateSessionToken(token: string) {
 
 	const sessionExpired = Date.now() >= session.expiresAt.getTime();
 	if (sessionExpired) {
-		await db.delete(table.session).where(eq(table.session.id, session.id));
+		await db.delete(storage.session).where(eq(storage.session.id, session.id));
 		return { session: null, user: null };
 	}
 
@@ -66,9 +71,9 @@ export async function validateSessionToken(token: string) {
 	if (renewSession) {
 		session.expiresAt = new Date(Date.now() + DAY_IN_MS * 30);
 		await db
-			.update(table.session)
+			.update(storage.session)
 			.set({ expiresAt: session.expiresAt })
-			.where(eq(table.session.id, session.id));
+			.where(eq(storage.session.id, session.id));
 	}
 
 	return { session, user };
@@ -77,7 +82,7 @@ export async function validateSessionToken(token: string) {
 export type SessionValidationResult = Awaited<ReturnType<typeof validateSessionToken>>;
 
 export async function invalidateSession(sessionId: TypeId<TYPEID.SESSION>) {
-	await db.delete(table.session).where(eq(table.session.id, sessionId));
+	await db.delete(storage.session).where(eq(storage.session.id, sessionId));
 }
 
 export function setSessionTokenCookie(event: RequestEvent, token: string, expiresAt: Date) {

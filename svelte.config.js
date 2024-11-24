@@ -15,7 +15,6 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			$epp: './src/model/application',
-			$def: './src/model/definitions',
 			$db: './src/model/infrastructure/database',
 			$infra: './src/model/infrastructure',
 			'$domain/account': './src/routes/(app)/account',

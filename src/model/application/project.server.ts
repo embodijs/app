@@ -1,6 +1,6 @@
 import { createProjectFromNewProject, hasExistingRepository } from '$core/project';
-import type { NewProject, Project } from '$def/project';
-import type { SessionUser } from '$def/user';
+import type { NewProject, Project } from '$core/project';
+import type { SessionUser } from '$core/user';
 import { activatePages } from '$infra/github/pages';
 import { createRepository } from '$infra/github/repo';
 import { createProject as createProjectInfra } from '$infra/project.server';

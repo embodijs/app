@@ -1,4 +1,4 @@
-import type { GitHubPlatformData } from '$def/github';
+import type { GitHubPlatformData } from '$core/git';
 
 export interface AccountServerData {
 	platformData: GitHubPlatformData;

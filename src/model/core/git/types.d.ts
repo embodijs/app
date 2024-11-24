@@ -1,8 +1,24 @@
+export interface GitRepo {
+	id: string;
+	name: string;
+	fullName: string;
+	owner: string;
+	ownerId: string;
+	private: boolean;
+	description: string;
+	defaultBranch: string;
+	activePage: boolean;
+}
+
 export interface GitHubPlatformData {
 	type: 'GitHub';
 	id: number;
 	username: string;
 }
+
+/**
+ * External defined by GitHub
+ */
 
 export interface GitHubUser {
 	id: number;

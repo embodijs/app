@@ -1,26 +1,23 @@
 import db from '$db/init.server';
-import * as table from '$db/schema';
+import { schema, type Project } from '$core/project';
 import { eq } from 'drizzle-orm';
-import type { Project } from '$def/project';
 
 export const createProject = (project: Project, when: Date = new Date()) => {
-	const timestampe = when.getTime();
-	return db.insert(table.project).values([
+	return db.insert(schema.storage).values([
 		{
 			...project,
-			createdAt: timestampe,
-			updatedAt: timestampe
+			createdAt: when,
+			updatedAt: when
 		}
 	]);
 };
 
 export const updateProject = (project: Project, when: Date = new Date()) => {
-	const timestamp = when.getDate();
 	return db
-		.update(table.project)
+		.update(schema.storage)
 		.set({
 			...project,
-			updatedAt: timestamp
+			updatedAt: when
 		})
-		.where(eq(table.project.id, project.id));
+		.where(eq(schema.storage.id, project.id));
 };

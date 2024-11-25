@@ -1,6 +1,7 @@
 import { GitHubExceptions, NotAuthorizedException } from '$core/exceptions';
 import type { GitRepo, GitHubRepo } from '$core/git';
-import type { NewProject } from '$core/project';
+import { convertGithubToRepo } from '$core/git/utils';
+import type { NewRepo } from '$core/repo';
 import type { SessionUser } from '$core/user';
 
 export async function loadRepositories(user: SessionUser): Promise<GitRepo[]> {
@@ -18,27 +19,14 @@ export async function loadRepositories(user: SessionUser): Promise<GitRepo[]> {
 	}
 
 	const repos = (await response.json()) as GitHubRepo[];
-	return repos.map((git) => ({
-		id: git.id.toString(),
-		name: git.name,
-		fullName: git.full_name,
-		owner: git.owner.login,
-		ownerId: git.owner.id.toString(),
-		private: git.private,
-		description: git.description,
-		defaultBranch: git.default_branch,
-		activePage: git.has_pages
-	}));
+	return repos.map(convertGithubToRepo);
 }
 
-export async function createRepository(
-	project: NewProject,
-	user: SessionUser
-): Promise<{ id: string }> {
+export async function createRepository(repo: NewRepo, user: SessionUser): Promise<GitRepo> {
 	const requestBody = {
-		name: project.repo,
-		description: project.repoDescription,
-		private: project.repoPrivate
+		name: repo.name,
+		description: repo.description,
+		private: repo.private
 	};
 
 	const response = await fetch('https://api.github.com/user/repos', {
@@ -53,6 +41,7 @@ export async function createRepository(
 		throw new Error('Failed to create repository');
 	}
 
-	const { id } = await response.json();
-	return { id: id.toString() };
+	const data = (await response.json()) as GitHubRepo;
+
+	return convertGithubToRepo(data);
 }

@@ -4,12 +4,17 @@ import { custom } from 'valibot';
 export enum TYPEID {
 	USER = 'u',
 	SESSION = 'x',
-	PROJECT = 'p'
+	PROJECT = 'p',
+	GITHUB = 'hub',
+	GITLAB = 'lab'
 }
 
-export const generateId = <T extends TYPEID>(domain: T): TypeId<T> => {
+export const generateId = <T extends TYPEID>(
+	domain: T,
+	id: string | number = nanoid()
+): TypeId<T> => {
 	//encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
-	return `${domain}-${nanoid()}`;
+	return `${domain}-${id}`;
 };
 
 export const validateTypeId = <T extends TYPEID>(domain: T, id: unknown): id is TypeId<T> => {
@@ -17,13 +22,13 @@ export const validateTypeId = <T extends TYPEID>(domain: T, id: unknown): id is 
 };
 
 export const validateTypeIdPrepare =
-	<T extends TYPEID>(domain: T) =>
+	<T extends TYPEID>(...domains: T[]) =>
 	(id: unknown) => {
-		return validateTypeId(domain, id);
+		return domains.some((domain) => validateTypeId(domain, id));
 	};
 
-export const valibotTypeId = <T extends TYPEID>(domain: T) => {
-	return custom<TypeId<T>>(validateTypeIdPrepare(domain));
+export const valibotTypeId = <T extends TYPEID>(...domains: T[]) => {
+	return custom<TypeId<T>>(validateTypeIdPrepare(...domains));
 };
 
 export type TypeId<T extends TYPEID> = `${T}-${string}`;

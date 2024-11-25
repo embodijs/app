@@ -1,5 +1,7 @@
+import type { RepoId } from '$core/repo';
+
 export interface GitRepo {
-	id: string;
+	id: RepoId;
 	name: string;
 	fullName: string;
 	owner: string;
@@ -7,7 +9,7 @@ export interface GitRepo {
 	private: boolean;
 	description: string;
 	defaultBranch: string;
-	activePage: boolean;
+	hasPages: boolean;
 }
 
 export interface GitHubPlatformData {

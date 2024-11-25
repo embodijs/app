@@ -1,1 +1,3 @@
-export const handleGitHubExceptions = (e: Error) => {};
+export const handleGitHubExceptions = (e: Error) => {
+	console.error(e);
+};

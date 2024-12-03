@@ -7,5 +7,6 @@ export type RepoId = TypeId<TYPEID.GITHUB | TYPEID.GITLAB>;
 export type StoredRepo = InferSelectModel<typeof schema.storage>;
 
 export type Repo = InferOutput<typeof schema.use>;
-export type NewRepo = InferInput<typeof schema.create>;
+export type NewRepoInput = InferInput<typeof schema.create>;
+export type NewRepo = InferOutput<typeof schema.create>;
 export type UpdateRepo = InferInput<typeof schema.edit>;

@@ -29,3 +29,5 @@ export const create = v.object({
 });
 
 export const edit = use;
+
+export const valibotId = valibotTypeId(TYPEID.GITHUB, TYPEID.GITLAB);

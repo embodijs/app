@@ -7,4 +7,4 @@ type Session = NonNullable<SessionValidationResult['session']>;
 
 export type SessionId = TypeId<TYPEID.SESSION>;
 export type { Session };
-export type StoredSession = InferSelectModel<typeof schema.session>;
+export type StoredSession = InferSelectModel<typeof schema.storage>;

@@ -115,7 +115,7 @@
 		<div class="grid gap-4">
 			<div>
 				<Label for={INPUT_IDS.REPO_NAME}>Name of the Project in GitHub</Label>
-				<Input name="repoName" id={INPUT_IDS.REPO_NAME} bind:value={newRepo.name} />
+				<Input name="repoName" id={INPUT_IDS.REPO_NAME} bind:value={$newRepo.name} />
 			</div>
 			<div>
 				<Label for={INPUT_IDS.REPO_DESCRIPTION}>Description for Git (optional)</Label>

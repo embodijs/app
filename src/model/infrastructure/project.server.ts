@@ -2,7 +2,7 @@ import db from '$db/init.server';
 import { schema, type Project } from '$core/project';
 import { eq } from 'drizzle-orm';
 
-export const createProject = (project: Project, when: Date = new Date()) => {
+export const store = (project: Project, when: Date = new Date()) => {
 	const result = db
 		.insert(schema.storage)
 		.values([
@@ -16,7 +16,7 @@ export const createProject = (project: Project, when: Date = new Date()) => {
 	return result;
 };
 
-export const updateProject = (project: Project, when: Date = new Date()) => {
+export const update = (project: Project, when: Date = new Date()) => {
 	return db
 		.update(schema.storage)
 		.set({

@@ -2,7 +2,7 @@ import type { Project } from '$core/project';
 import type { Repo } from '$core/repo';
 import type { SessionUser } from '$core/user';
 
-export async function activatePages(project: Project, repo: Repo, user: SessionUser) {
+export async function activate(project: Project, repo: Repo, user: SessionUser) {
 	const { path } = project;
 	const { name, owner, branch } = repo;
 	console.log(`Activating pages for ${owner}/${name} at ${path} on branch ${branch}`);

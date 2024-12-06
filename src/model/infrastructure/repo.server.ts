@@ -2,7 +2,7 @@ import db from '$db/init.server';
 import { schema, type Repo } from '$core/repo';
 import { eq } from 'drizzle-orm';
 
-export const createRepo = (repo: Repo, when: Date = new Date()) => {
+export const store = (repo: Repo, when: Date = new Date()) => {
 	const result = db
 		.insert(schema.storage)
 		.values([
@@ -16,7 +16,7 @@ export const createRepo = (repo: Repo, when: Date = new Date()) => {
 	return result;
 };
 
-export const updateRepo = (repo: Repo, when: Date = new Date()) => {
+export const update = (repo: Repo, when: Date = new Date()) => {
 	return db
 		.update(schema.storage)
 		.set({

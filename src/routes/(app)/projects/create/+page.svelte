@@ -5,4 +5,4 @@
 	const { data }: { data: PageData } = $props();
 </script>
 
-<CreateProject form={data.superForm} repos={data.repos} />
+<CreateProject form={data.superForm} repos={data.repos} redirect={'..'} />

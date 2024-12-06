@@ -8,18 +8,30 @@
 	import { getNotificationStore } from '$lib/contexts/notifications';
 	import RepoFormPart from '$components/organisms/RepoFormPart.svelte';
 	import type { NewRepo, Repo } from '$core/repo';
+	import { goto } from '$app/navigation';
 
 	type Props = {
 		form: SuperValidated<NewProject>;
 		repos: GitRepo[];
+		redirect?: string;
 	};
 
 	const notifications = getNotificationStore();
 
-	const { form: validateForm, repos }: Props = $props();
+	const { form: validateForm, repos, ...props }: Props = $props();
 	const { form, enhance, allErrors } = superForm(validateForm, {
 		dataType: 'json',
-		validators: valibot(schema.create)
+		validators: valibot(schema.create),
+		onResult({ result }) {
+			notifications.success('Project created');
+			if (result.type === 'redirect') {
+				goto(result.location);
+			} else if (result.type === 'success') {
+				if (props.redirect) {
+					goto(props.redirect);
+				}
+			}
+		}
 	});
 
 	$effect(() => {

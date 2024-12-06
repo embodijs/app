@@ -1,15 +1,17 @@
 <script lang="ts">
+	import { Card } from 'flowbite-svelte';
+
 	type Props = {
-		onclick: () => void;
+		href: string;
 	};
 
-	const { onclick }: Props = $props();
+	const { href }: Props = $props();
 </script>
 
-<button {onclick} class="content-tile dashed clickable border">
+<Card {href} class="content-tile dashed clickable border">
 	<i class="ri-add-large-line"></i>
 	<span>Add a new project</span>
-</button>
+</Card>
 
 <style>
 	button {

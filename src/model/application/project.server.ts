@@ -27,4 +27,4 @@ export const createProject = pipe(
 	git.activatePagesIfNecessary(infra.git.pages.activate)
 );
 
-export const load = pipe();
+export const allProjects = pipe(infra.project.all);

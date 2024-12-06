@@ -1,10 +1,17 @@
 <script lang="ts">
-	import { ProjectList, EmptyTile } from '$molecules';
+	import { ProjectList } from '$molecules';
+	import EmptyTile from '$molecules/project/EmptyTile.svelte';
+	import { Card } from 'flowbite-svelte';
 
-	const { onadd } = $props();
+	const { projects, addHref } = $props();
 </script>
 
 <h2>Projects</h2>
 <ProjectList>
-	<EmptyTile onclick={onadd} />
+	{#each projects as project}
+		<Card href="projects/{project.id}">
+			{project.name}
+		</Card>
+	{/each}
+	<EmptyTile href={addHref} />
 </ProjectList>

@@ -1,13 +1,14 @@
-import { isAuthenticated } from '$domain/auth/exports.server';
+import { isAuthenticated } from '$lib/helpers/auth.server';
+import { loadRepositories } from '$infra/github/repo';
+import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
+import { getAllRepositories } from '$epp/repo.server';
+import { createSessionUser } from '$core/user';
 
-export const GET: RequestHandler = async ({ locals, fetch }) => {
+export type APIGet = Awaited<ReturnType<typeof loadRepositories>>;
+export const GET: RequestHandler = async ({ locals }) => {
 	isAuthenticated(locals);
-	const repos = await fetch('https://api.github.com/user/repos', {
-		headers: {
-			Authorization: `Bearer ${locals.session.accessToken}`
-		}
-	});
-
-	return new Response(repos.body);
+	const sessionUser = createSessionUser(locals.user, locals.session!);
+	const repos = await getAllRepositories(sessionUser);
+	return json(repos);
 };

@@ -1,6 +1,7 @@
-export interface AccountServerData {}
+import type { GitHubPlatformData } from '$core/git';
 
-export interface UserServerData {
+export interface AccountServerData {
+	platformData: GitHubPlatformData;
 	name: string;
 	avatar?: string;
 }

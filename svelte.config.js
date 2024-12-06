@@ -1,22 +1,34 @@
+import { preprocessMeltUI } from '@melt-ui/pp';
 import adapter from '@sveltejs/adapter-auto';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
+	// Consult https://svelte.dev/docs/kit/integrations
 	// for more information about preprocessors
-	preprocess: vitePreprocess(),
+	preprocess: [vitePreprocess(), preprocessMeltUI()],
 
 	kit: {
-		// adapter-auto only supports some environments, see https://kit.svelte.dev/docs/adapter-auto for a list.
+		// adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
 		// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
-		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
+		// See https://svelte.dev/docs/kit/adapters for more information about adapters.
 		adapter: adapter(),
 		alias: {
-			$db: './src/database',
+			$epp: './src/model/application',
+			$db: './src/model/infrastructure/database',
+			$infra: './src/model/infrastructure',
 			'$domain/account': './src/routes/(app)/account',
 			'$domain/auth': './src/routes/auth',
-			'$api': './src/routes/api',
+			$api: './src/routes/api',
+			$stores: './src/stores',
+			$validation: './src/model/validation',
+			$core: './src/model/core',
+			$data: './src/model/infrastructure',
+			$atoms: './src/components/atoms',
+			$molecules: './src/components/molecules',
+			$organisms: './src/components/organisms',
+			$templates: './src/components/templates',
+			$components: './src/components'
 		}
 	}
 };

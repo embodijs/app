@@ -1,27 +1,17 @@
-
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { Logo, UserMenu } from '$lib/comps';
 	import type { LayoutData } from './$types';
+	import { Header, Toaster } from '$components';
+	import type { Snippet } from 'svelte';
 
-	export let data: LayoutData;
+	type Props = {
+		data: LayoutData;
+		children?: Snippet;
+	};
 
-	const { user } = data;
-
+	const { data, children }: Props = $props();
 </script>
 
-<header>
-	<Logo />
-	<UserMenu {user} />
-</header>
-<slot />
-
-<style>
-	header {
-		display: flex;
-		justify-content: space-between;
-		padding: 0.5rem;
-	}
-
-
-</style>
+<Toaster>
+	<Header user={data.user} />
+	{@render children?.()}
+</Toaster>

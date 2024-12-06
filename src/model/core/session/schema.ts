@@ -1,6 +1,6 @@
-import { customId } from '$core/utils/schema';
-import { schema as userSchema } from '$core/user';
-import type { TYPEID } from '$lib/typeid';
+import { customId } from '../utils/schema';
+import { schema as userSchema } from '../user';
+import type { TYPEID } from '../../../lib/typeid';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 export const storage = sqliteTable('session', {

@@ -1,6 +1,6 @@
-import { customId, metaAttributes } from '$core/utils/schema';
+import { customId, metaAttributes } from '../utils/schema';
 import type { GitHubPlatformData } from '../git';
-import type { TYPEID } from '$lib/typeid';
+import type { TYPEID } from '../../../lib/typeid';
 import { sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 export const storage = sqliteTable('user', {

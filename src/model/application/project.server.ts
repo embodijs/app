@@ -1,30 +1,73 @@
-import { createProjectFromNewProject, hasExistingRepository } from '$core/project';
-import type { NewProject, ProjectWithRepo } from '$core/project';
+import type { GitRepo } from '$core/git';
+import type { NewProject, Project } from '$core/project';
+import { generateProjectId } from '$core/project';
+import type { NewRepo, Repo } from '$core/repo';
+import { isExistingRepo, isNewRepo } from '$core/repo/utils';
 import type { SessionUser } from '$core/user';
 import { activatePages } from '$infra/github/pages';
 import { createRepository } from '$infra/github/repo';
 import { createProject as createProjectInfra } from '$infra/project.server';
+import { createRepo } from '$infra/repo.server';
+import { addDate, g, pipe, exec } from 'pipe-and-combine';
 
-export async function createProject(newProject: NewProject, user: SessionUser) {
-	if (hasExistingRepository(newProject)) {
-		const project = createProjectFromNewProject(newProject, newProject.repo);
-		await createProjectInfra(project);
-		await activateProjectPageIfNecessary(project);
-	} else {
-		const { id } = await createRepository(newProject.repo, user);
-		const project = createProjectFromNewProject(newProject, {
-			...newProject.repo,
-			hasPages: newProject.repo.hasPages ?? true,
-			id
-		});
-		await createProjectInfra(project);
-		await activateProjectPageIfNecessary(project);
-	}
-}
+export const activateProjectPageIfNecessary = () =>
+	g(async (data: { project: Project; repo: Repo; user: SessionUser; isNewRepo: boolean }) => {
+		const { repo, project, user } = data;
+		if (!isNewRepo) {
+			await activatePages(project, repo, user);
+		}
+		return data;
+	});
 
-export async function activateProjectPageIfNecessary(project: ProjectWithRepo) {
-	if (project.repo.hasPages === false) {
-		return;
-	}
-	await activatePages(project);
-}
+export const prepareCreateProjectPipe = () => (newProject: NewProject, user: SessionUser) => {
+	const { repo, ...project } = newProject;
+	return {
+		project: {
+			id: generateProjectId(),
+			...project
+		},
+		repo,
+		user
+	};
+};
+
+export const createRepoIfNeeded = (
+	createGithubRepo: (repo: NewRepo, user: SessionUser) => Promise<GitRepo>
+) =>
+	g(async (data: { project: Omit<Project, 'repoId'>; repo: NewRepo | Repo; user: SessionUser }) => {
+		const { project, repo, user } = data;
+		if (isExistingRepo(repo)) {
+			return {
+				...data,
+				repo,
+				project: {
+					...project,
+					repoId: repo.id
+				},
+				isNewRepo: false
+			};
+		}
+
+		const { id } = await createGithubRepo(repo, user);
+		return {
+			...data,
+			project: {
+				...project,
+				repoId: id
+			},
+			repo: {
+				...repo,
+				id
+			},
+			isNewRepo: true
+		};
+	});
+
+export const createProject = pipe(
+	prepareCreateProjectPipe(),
+	createRepoIfNeeded(createRepository),
+	addDate('timestamp'),
+	exec(createRepo, ['repo', 'timestamp']),
+	exec(createProjectInfra, ['project', 'timestamp']),
+	activateProjectPageIfNecessary()
+);

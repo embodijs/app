@@ -1,9 +1,9 @@
-import { TYPEID, valibotTypeId } from '$lib/typeid.js';
+import { TYPEID, valibotTypeId } from '../../../lib/typeid';
 import { metaAttributes, customId } from '../utils/schema';
 import * as v from 'valibot';
 import { text, integer, sqliteTable } from 'drizzle-orm/sqlite-core';
 
-export const storage = sqliteTable('project', {
+export const storage = sqliteTable('repo', {
 	id: customId<TYPEID.GITHUB | TYPEID.GITLAB>('id').primaryKey(),
 	owner: text('owner').notNull(),
 	name: text('name').notNull(),

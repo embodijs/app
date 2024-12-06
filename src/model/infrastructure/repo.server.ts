@@ -1,13 +1,13 @@
 import db from '$db/init.server';
-import { schema, type Project } from '$core/project';
+import { schema, type Repo } from '$core/repo';
 import { eq } from 'drizzle-orm';
 
-export const createProject = (project: Project, when: Date = new Date()) => {
+export const createRepo = (repo: Repo, when: Date = new Date()) => {
 	const result = db
 		.insert(schema.storage)
 		.values([
 			{
-				...project,
+				...repo,
 				createdAt: when,
 				updatedAt: when
 			}
@@ -16,12 +16,12 @@ export const createProject = (project: Project, when: Date = new Date()) => {
 	return result;
 };
 
-export const updateProject = (project: Project, when: Date = new Date()) => {
+export const updateRepo = (repo: Repo, when: Date = new Date()) => {
 	return db
 		.update(schema.storage)
 		.set({
-			...project,
+			...repo,
 			updatedAt: when
 		})
-		.where(eq(schema.storage.id, project.id));
+		.where(eq(schema.storage.id, repo.id));
 };

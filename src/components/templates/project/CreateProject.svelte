@@ -1,22 +1,13 @@
 <script lang="ts">
 	import type { GitRepo } from '$core/git';
 	import { schema, type NewProject } from '$core/project';
-	import {
-		Tabs,
-		TabItem,
-		Textarea,
-		Label,
-		Input,
-		Select,
-		Button,
-		type SelectOptionType,
-		Checkbox,
-		Helper
-	} from 'flowbite-svelte';
+	import { Textarea, Label, Input, Button } from 'flowbite-svelte';
 	import { superForm, type SuperValidated } from 'sveltekit-superforms';
 	import { Section } from '$components';
 	import { valibot } from 'sveltekit-superforms/adapters';
 	import { getNotificationStore } from '$lib/contexts/notifications';
+	import RepoFormPart from '$components/organisms/RepoFormPart.svelte';
+	import type { NewRepo, Repo } from '$core/repo';
 
 	type Props = {
 		form: SuperValidated<NewProject>;
@@ -31,22 +22,6 @@
 		validators: valibot(schema.create)
 	});
 
-	const newRepo = $state({
-		id: '',
-		name: '',
-		description: '',
-		private: false,
-		pages: true
-	});
-
-	const existingRepo = $state({
-		id: '',
-		name: '',
-		description: '',
-		private: false,
-		pages: true
-	});
-
 	$effect(() => {
 		return allErrors.subscribe((errors) => {
 			if (errors?.length) {
@@ -57,29 +32,14 @@
 		});
 	});
 
+	const setRepo = (repo: Repo | NewRepo) => {
+		$form.repo = repo;
+	};
+
 	const INPUT_IDS = {
-		REPO_SELECT: 'select-repo-1',
-		REPO_NAME: 'input-repo-name-1',
-		REPO_DESCRIPTION: 'textarea-description-1',
 		PROJECT_NAME: 'input-project-name-1',
 		PROJECT_URL: 'input-project-url-1',
 		PROJECT_DESCRIPTION: 'textarea-project-description-1'
-	};
-
-	const convertRepoToSelectItems = (repos: GitRepo[]): SelectOptionType<string>[] => {
-		return repos.map((repo) => {
-			return {
-				value: repo.id,
-				name: repo.fullName
-			};
-		});
-	};
-
-	const chooseRepo = () => {
-		//TODO: merge Data from existingRepo into form data
-	};
-	const createRepo = () => {
-		//TODO: merge Data from newRepo into form data
 	};
 </script>
 
@@ -87,57 +47,18 @@
 	<h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Create a new Project</h2>
 	<form method="POST" use:enhance class="grid gap-4">
 		<div>
-			<Tabs tabStyle="underline">
-				<TabItem onclick={chooseRepo}>
-					<div slot="title">
-						<i class="ri-git-commit-line"></i> Choose extisting Project
-					</div>
-					<div>
-						<Label for={INPUT_IDS.REPO_SELECT}>Select an existing Project</Label>
-						<Select
-							id={INPUT_IDS.REPO_SELECT}
-							items={convertRepoToSelectItems(repos)}
-							bind:value={existingRepo.id}
-						/>
-					</div>
-				</TabItem>
-				<TabItem open onclick={createRepo}>
-					<div slot="title">
-						<i class="ri-add-line"></i>
-						Create a new Project
-					</div>
-					<div class="grid gap-4">
-						<div>
-							<Label for={INPUT_IDS.REPO_NAME}>Name of the Project in GitHub</Label>
-							<Input name="repoName" id={INPUT_IDS.REPO_NAME} bind:value={newRepo.name} />
-						</div>
-						<div>
-							<Label for={INPUT_IDS.REPO_DESCRIPTION}>Description for Git (optional)</Label>
-							<Textarea
-								name="repoDescription"
-								id={INPUT_IDS.REPO_DESCRIPTION}
-								placeholder="Description will be send to GitHub"
-								bind:value={newRepo.description}
-							/>
-						</div>
-						<div>
-							<Checkbox checked={newRepo.private}>Private</Checkbox>
-							<Helper>Should the repository be private?</Helper>
-						</div>
-					</div>
-				</TabItem>
-			</Tabs>
+			<RepoFormPart {repos} onupdate={setRepo} />
 		</div>
 		<div>
-			<Label for={INPUT_IDS.PROJECT_NAME}>Project name</Label>
+			<Label for={INPUT_IDS.PROJECT_NAME}>Name</Label>
 			<Input id={INPUT_IDS.PROJECT_NAME} name="name" bind:value={$form.name} />
 		</div>
 		<div>
-			<Label for={INPUT_IDS.PROJECT_URL}>Project name</Label>
+			<Label for={INPUT_IDS.PROJECT_URL}>URL</Label>
 			<Input id={INPUT_IDS.PROJECT_URL} name="url" bind:value={$form.url} />
 		</div>
 		<div>
-			<Label for={INPUT_IDS.PROJECT_DESCRIPTION}>Project description (optional)</Label>
+			<Label for={INPUT_IDS.PROJECT_DESCRIPTION}>Description (optional)</Label>
 			<Textarea
 				name="repoDescription"
 				id={INPUT_IDS.PROJECT_DESCRIPTION}

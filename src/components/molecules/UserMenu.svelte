@@ -7,25 +7,22 @@
 	const { user }: { user: User } = $props();
 </script>
 
-<div>
-	<div>
-		<span>Hello, {user.name}</span>
-		{#if user.avatar}
-			<Avatar src={user.avatar} />
-		{/if}
-	</div>
-</div>
+<button>
+	<span>{user.name}</span>
+	{#if user.avatar}
+		<Avatar src={user.avatar} />
+	{/if}
+</button>
 
-<style>
-	div {
-		display: flex;
-		justify-content: space-between;
+<style lang="postcss">
+	button {
+		@apply w-full;
+		display: grid;
+		grid-template-columns: 1fr auto;
 		align-items: center;
-		padding: 0.5rem;
 	}
 
 	span {
-		padding: 0.5rem;
-		font-weight: 600;
+		@apply w-full text-left font-bold;
 	}
 </style>

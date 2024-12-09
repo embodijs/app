@@ -5,6 +5,4 @@
 	const { data }: { data: PageData } = $props();
 </script>
 
-<main>
-	<ProjectOverview addHref="/projects/create" projects={data.projects} />
-</main>
+<ProjectOverview addHref="/projects/create" projects={data.projects} />

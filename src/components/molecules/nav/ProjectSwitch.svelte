@@ -9,7 +9,7 @@
 
 <div>
 	<small class="title">Project</small>
-	<h1>{name}</h1>
+	<div class="project">{name}</div>
 	<a {href}><small>switch</small></a>
 </div>
 
@@ -18,8 +18,8 @@
 		grid-column: span 2;
 	}
 
-	h1 {
-		@apply text-2xl font-bold;
+	div.project {
+		@apply p-0 text-2xl font-bold;
 	}
 
 	a {

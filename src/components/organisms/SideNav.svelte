@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import type { User } from '$core/user';
-	import { NavProjectSwitch, UserMenu } from '$molecules';
+	import { NavProjectSwitch } from '$molecules';
 	import {
 		Avatar,
 		Sidebar,
 		SidebarBrand,
-		SidebarCta,
 		SidebarGroup,
 		SidebarItem,
 		SidebarWrapper
@@ -45,7 +44,7 @@
 		<SidebarGroup border>
 			<SidebarItem label={user.name}>
 				<svelte:fragment slot="icon">
-					<Avatar src={user.avatar} />
+					<Avatar src={user.avatar}>{user.name[0]}</Avatar>
 				</svelte:fragment>
 			</SidebarItem>
 		</SidebarGroup>

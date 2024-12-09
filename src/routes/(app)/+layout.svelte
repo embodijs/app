@@ -13,23 +13,20 @@
 
 <div class="frame">
 	<Toaster>
-		<header class="sidebar">
-			<SideNav
-				project={{
-					name: 'Website',
-					id: 'random'
-				}}
-				hrefs={{
-					posts: '/posts',
-					pages: '/pages',
-					projects: '/projects'
-				}}
-				user={data.user}
-			/>
-		</header>
-		<main>
-			{@render children?.()}
-		</main>
+		<SideNav
+			project={{
+				name: 'Website',
+				id: 'random'
+			}}
+			hrefs={{
+				posts: '/posts',
+				pages: '/pages',
+				projects: '/projects'
+			}}
+			user={data.user}
+		/>
+
+		{@render children?.()}
 	</Toaster>
 </div>
 
@@ -38,13 +35,5 @@
 		display: grid;
 		height: 100vh;
 		grid-template-columns: auto 1fr;
-	}
-
-	.sidebar {
-		background-color: var(--color-bg);
-	}
-
-	main {
-		padding: 1rem;
 	}
 </style>

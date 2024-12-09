@@ -8,6 +8,6 @@ export const GET: RequestHandler = async ({ locals }) => {
 	return json({
 		platformData: locals.user.platformData,
 		name: locals.user.name,
-		avatar: locals.user.avatarUrl ?? undefined
+		avatar: locals.user.avatar
 	} satisfies AccountServerData);
 };

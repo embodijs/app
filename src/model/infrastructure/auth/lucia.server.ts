@@ -6,6 +6,7 @@ import { db } from '$db/init.server';
 import { TYPEID, type TypeId } from '$lib/typeid';
 import { type UserId, schema as userSchema } from '$core/user';
 import { type StoredSession, schema as sessionSchema } from '$core/session';
+import { removeNil } from '$lib/helpers/database';
 
 const storage = {
 	user: userSchema.storage,
@@ -40,21 +41,22 @@ export async function createSession(token: string, userId: UserId, accessToken: 
 
 export async function validateSessionToken(token: string) {
 	const sessionId = encodeSessionToken(token);
-	const [result] = await db
+	const result = await db
 		.select({
 			// Adjust user storage here to tweak returned data
 			user: {
 				id: storage.user.id,
 				name: storage.user.name,
 				email: storage.user.email,
-				avatarUrl: storage.user.avatarUrl,
+				avatar: storage.user.avatarUrl,
 				platformData: storage.user.platformData
 			},
 			session: storage.session
 		})
 		.from(storage.session)
 		.innerJoin(storage.user, eq(storage.session.userId, storage.user.id))
-		.where(eq(storage.session.id, sessionId));
+		.where(eq(storage.session.id, sessionId))
+		.get();
 
 	if (!result) {
 		return { session: null, user: null };
@@ -76,7 +78,10 @@ export async function validateSessionToken(token: string) {
 			.where(eq(storage.session.id, session.id));
 	}
 
-	return { session, user };
+	return {
+		session: removeNil(session),
+		user: removeNil(user)
+	};
 }
 
 export type SessionValidationResult = Awaited<ReturnType<typeof validateSessionToken>>;

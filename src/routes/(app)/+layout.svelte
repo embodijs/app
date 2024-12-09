@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { LayoutData } from './$types';
-	import { Header, SideNav, Toaster } from '$components';
+	import { SideNav, Toaster } from '$components';
 	import type { Snippet } from 'svelte';
 
 	type Props = {

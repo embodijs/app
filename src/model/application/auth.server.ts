@@ -18,6 +18,6 @@ export const upsertUserByGithubId = async (gitHubUser: GitHubUser): Promise<Stor
 		},
 		name: gitHubUser.name,
 		email: gitHubUser.notification_email || gitHubUser.email,
-		avatarUrl: gitHubUser.avatar_url
+		avatar: gitHubUser.avatar_url
 	});
 };

@@ -4,7 +4,6 @@ import { TYPEID, valibotTypeId } from '../../../lib/typeid';
 import * as v from 'valibot';
 import { text, sqliteTable } from 'drizzle-orm/sqlite-core';
 import { schema as repoSchema } from '../repo';
-
 export const valibotId = valibotTypeId(TYPEID.PROJECT);
 
 export const storage = sqliteTable('project', {
